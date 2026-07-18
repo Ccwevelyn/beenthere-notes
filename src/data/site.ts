@@ -108,6 +108,94 @@ export const courses = [
     code: "STAT 201",
     title: { zh: "概率与统计", en: "Probability & Statistics" },
     description: { zh: "常用分布、推断方法与易错点。", en: "Distributions, inference, and common pitfalls." }
+  },
+  {
+    slug: "project-management",
+    grade: "year-3" as const,
+    semester: "fall" as const,
+    code: "COMP3112",
+    title: { zh: "项目管理", en: "Project Management" },
+    description: { zh: "项目规划、执行与管理方法。", en: "Project planning, execution, and management methods." }
+  },
+  {
+    slug: "human-factors-user-interfaces",
+    grade: "year-3" as const,
+    semester: "fall" as const,
+    code: "COMP3115",
+    title: { zh: "人机接口技术", en: "Human Factors and User Interfaces" },
+    description: { zh: "人机交互原理、界面设计与可用性。", en: "Human-computer interaction, interface design, and usability." }
+  },
+  {
+    slug: "science-communications",
+    grade: "year-3" as const,
+    semester: "fall" as const,
+    code: "MENG3111",
+    title: { zh: "科学传播", en: "Science Communications" },
+    description: { zh: "面向不同受众的科学与技术传播。", en: "Communicating scientific and technical information to diverse audiences." }
+  },
+  {
+    slug: "advanced-web-development",
+    grade: "year-3" as const,
+    semester: "fall" as const,
+    code: "COMP3122",
+    title: { zh: "进阶网页应用开发", en: "Advanced Web Development" },
+    description: { zh: "现代网页应用、交互界面与后端开发。", en: "Modern web applications, interactive interfaces, and backend development." }
+  },
+  {
+    slug: "data-driven-business-management",
+    grade: "year-3" as const,
+    semester: "fall" as const,
+    code: "COMP3116",
+    title: { zh: "数据驱动商业管理", en: "Data Driven Business Management" },
+    description: { zh: "运用数据支持商业管理与决策。", en: "Using data to support business management and decision-making." }
+  },
+  {
+    slug: "risk-management-business",
+    grade: "year-3" as const,
+    semester: "fall" as const,
+    code: "MSEL3109",
+    title: { zh: "商业危机管理导论", en: "Risk Management in Business" },
+    description: { zh: "商业与金融风险的识别、分析及管理。", en: "Identifying, analysing, and managing business and financial risks." }
+  },
+  {
+    slug: "artificial-intelligence",
+    grade: "year-3" as const,
+    semester: "spring" as const,
+    code: "COMP3113",
+    title: { zh: "人工智能", en: "Artificial Intelligence" },
+    description: { zh: "人工智能的理论、方法与实际应用。", en: "Theories, methods, and practical applications of artificial intelligence." }
+  },
+  {
+    slug: "information-system-project",
+    grade: "year-3" as const,
+    semester: "spring" as const,
+    code: "COMP3114",
+    title: { zh: "信息系统项目", en: "Information System Project" },
+    description: { zh: "以团队协作完成信息系统的设计与实现。", en: "Designing and implementing an information system in a team." }
+  },
+  {
+    slug: "analytical-data-design-applications",
+    grade: "year-3" as const,
+    semester: "spring" as const,
+    code: "COMP3117",
+    title: { zh: "分析数据设计与应用", en: "Analytical Data Design and Applications" },
+    description: { zh: "分析型数据的设计方法与实际应用。", en: "Design methods and applications for analytical data." }
+  },
+  {
+    slug: "data-science-business-analytics",
+    grade: "year-3" as const,
+    semester: "spring" as const,
+    code: "COMP3118",
+    title: { zh: "数据科学与商业分析", en: "Data Science and Business Analytics" },
+    description: { zh: "数据科学方法及其商业分析应用。", en: "Data science methods and their applications in business analytics." }
+  },
+  {
+    slug: "interpersonal-relations",
+    grade: "year-3" as const,
+    semester: "spring" as const,
+    code: "MSEL3107",
+    title: { zh: "人际关系", en: "Interpersonal Relations" },
+    description: { zh: "人际沟通、团队互动与关系管理。", en: "Interpersonal communication, group dynamics, and relationship skills." }
   }
 ];
 
