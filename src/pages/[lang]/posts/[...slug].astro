@@ -1,0 +1,107 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { copy, courses, grades, semesters, type Lang } from "../../../data/site";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("notes", ({ data }) => data.published);
+  return entries.map((entry) => ({
+    params: { lang: entry.data.lang, slug: entry.id.replace(/^(zh|en)\//, "") },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const lang = entry.data.lang as Lang;
+const t = copy[lang];
+const grade = grades.find((item) => item.id === entry.data.grade)!;
+const semester = semesters.find((item) => item.id === entry.data.semester)!;
+const course = courses.find((item) => item.slug === entry.data.course)!;
+const apiUrl = import.meta.env.PUBLIC_VIEWS_API_URL || "";
+const articleSlug = `${lang}/${entry.id.replace(/^(zh|en)\//, "")}`;
+---
+
+<BaseLayout lang={lang} title={entry.data.title} description={entry.data.description}>
+  <article class="article-wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
+      <span><a href={`/${lang}/${grade.id}/`}>{grade.label[lang]}</a></span>
+      <span><a href={`/${lang}/${grade.id}/${semester.id}/`}>{semester.label[lang]}</a></span>
+      <span><a href={`/${lang}/${grade.id}/${semester.id}/${course.slug}/`}>{course.title[lang]}</a></span>
+      <span>{entry.data.title}</span>
+    </nav>
+    <span class="pill">{entry.data.type === "note" ? t.notes : t.tips}</span>
+    <h1>{entry.data.title}</h1>
+    <p class="hero-copy">{entry.data.description}</p>
+    <div class="article-meta">
+      <time datetime={entry.data.date.toISOString()}>{entry.data.date.toLocaleDateString(lang === "zh" ? "zh-CN" : "en-GB")}</time>
+      <span>·</span>
+      <span
+        id="view-count"
+        data-slug={articleSlug}
+        data-api={apiUrl}
+        data-suffix={t.views}
+      >— {t.views}</span>
+    </div>
+    <div class="prose">
+      <Content />
+    </div>
+    {entry.data.attachments.length > 0 && (
+      <section class="attachments">
+        <h2>{lang === "zh" ? "附件" : "Attachments"}</h2>
+        <ul>
+          {entry.data.attachments.map((attachment) => {
+            const isImage = /\.(png|jpe?g|gif|webp|avif|svg)$/i.test(attachment.file);
+            const isPdf = /\.pdf$/i.test(attachment.file);
+            return (
+              <li>
+                {isImage ? (
+                  <figure>
+                    <img src={attachment.file} alt={attachment.label} loading="lazy" />
+                    <figcaption>{attachment.label}</figcaption>
+                  </figure>
+                ) : (
+                  <a href={attachment.file} target="_blank" rel="noopener">
+                    <span class="attachment-icon" aria-hidden="true">{isPdf ? "PDF" : "FILE"}</span>
+                    <span>{attachment.label}</span>
+                    <span class="meta">{lang === "zh" ? "点击查看 / 下载" : "View / download"}</span>
+                  </a>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    )}
+  </article>
+</BaseLayout>
+
+<script>
+  const counter = document.querySelector<HTMLElement>("#view-count");
+  if (counter) {
+    const { slug, api, suffix } = counter.dataset;
+    const renderCount = (count: number) => {
+      counter.textContent = `${count.toLocaleString()} ${suffix}`;
+    };
+
+    if (!api || !slug) {
+      renderCount(Number(localStorage.getItem(`demo-views:${slug}`) || 128));
+    } else {
+      const key = `viewed:${slug}`;
+      const method = sessionStorage.getItem(key) ? "GET" : "POST";
+      fetch(`${api}/api/views/${encodeURIComponent(slug)}`, { method })
+        .then((response) => {
+          if (!response.ok) throw new Error("View service unavailable");
+          return response.json();
+        })
+        .then((data) => {
+          renderCount(data.views);
+          sessionStorage.setItem(key, "1");
+        })
+        .catch(() => {
+          counter.textContent = "";
+        });
+    }
+  }
+</script>

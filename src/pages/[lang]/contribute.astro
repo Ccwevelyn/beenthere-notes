@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { copy, languages, type Lang } from "../../data/site";
+
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = copy[lang];
+---
+
+<BaseLayout lang={lang} title={t.contribute}>
+  <div class="container">
+    <article class="author-note">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
+        <span>{t.contribute}</span>
+      </nav>
+      <p class="eyebrow">BeenThere Notes</p>
+      <h1>{t.contribute}</h1>
+      {lang === "zh" ? (
+        <>
+          <p>小站致力于打造开源的互帮互助平台。我会不断更新整理的笔记，也欢迎更多同学的投稿~ 笔记投稿内容不限（知识梳理、题型总结、考试提醒…），形式不限（PDF、手写笔记、整理好的截图…）。欢迎留下你的经验~</p>
+          <p>注意：小站不接受往年的考试试卷、课件 PPT 等可能涉及侵权的材料，还请谅解~</p>
+          <p>与此同时，如果你遇到了学业上的难题、生活中的不解，愿意和我聊聊，也欢迎投稿~ 我会保证信件的私密性，也希望我们可以一起搭建良好的交流平台~</p>
+          <p>投稿地址：<a href="mailto:beenthere.notes@outlook.com">beenthere.notes@outlook.com</a>。邮件备注请按主题写清楚，例如：<strong>投稿 + 年级 + 学科</strong>，或 <strong>疑问 + 年级</strong>。</p>
+          <p>一起把路标留得更清楚一点。</p>
+        </>
+      ) : (
+        <>
+          <p>This little site aims to be an open, mutual-help platform. I will keep updating my notes, and classmates are warmly welcome to contribute~ Content can be anything useful (concept summaries, problem patterns, exam reminders…), and so can the format (PDF, handwritten notes, tidy screenshots…). Leave your experience here~</p>
+          <p>Please note: we do not accept past exam papers, lecture PPT packs, or other materials that may involve copyright issues. Thank you for understanding~</p>
+          <p>If you run into academic difficulties or something puzzling in university life and would like to talk, you are also welcome to write~ Letters are kept private, and I hope we can build a kind space for exchange together~</p>
+          <p>Email: <a href="mailto:beenthere.notes@outlook.com">beenthere.notes@outlook.com</a>. Please mark the subject clearly, for example: <strong>Contribute + Year + Course</strong>, or <strong>Question + Year</strong>.</p>
+          <p>Let's leave clearer signposts together.</p>
+        </>
+      )}
+    </article>
+  </div>
+</BaseLayout>

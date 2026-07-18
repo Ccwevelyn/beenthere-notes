@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { copy, languages, type Lang } from "../../data/site";
+
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = copy[lang];
+---
+
+<BaseLayout lang={lang} title={t.author}>
+  <div class="container">
+    <article class="author-note">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
+        <span>{t.author}</span>
+      </nav>
+      <p class="eyebrow">BeenThere Notes</p>
+      <h1>{t.author}</h1>
+      {lang === "zh" ? (
+        <>
+          <p>迷茫、彷徨... 一段时间充斥着我的大学生活。所以，我想分享一些一路走来的经历。不仅仅是为了帮助有需要的人，更是希望可以拉曾经的那个自己一把。笔记会持续更新，也欢迎你带着自己的判断使用它们。</p>
+          <p>“Been there” 不是答案，而是一句：这段路有人走过。</p>
+        </>
+      ) : (
+        <>
+          <p>Lost and wandering... that was my university life for a while. So I want to share some of what I learned along the way — not only to help those who need it, but also to reach back and pull up the person I used to be. The notes will keep being updated, and you are welcome to use them with your own judgement.</p>
+          <p>"Been there" is not an answer. It simply says: someone has walked this road before.</p>
+        </>
+      )}
+    </article>
+  </div>
+</BaseLayout>

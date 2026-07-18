@@ -1,0 +1,121 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { copy, languages, type Lang } from "../../data/site";
+
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = copy[lang];
+const entries = (await getCollection("notes"))
+  .filter((entry) => entry.data.lang === lang)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const apiUrl = import.meta.env.PUBLIC_VIEWS_API_URL || "";
+---
+
+<BaseLayout lang={lang} title={t.console}>
+  <div class="container console-shell" id="console" data-api={apiUrl}>
+    <div class="console-top">
+      <div>
+        <p class="eyebrow">BeenThere Notes</p>
+        <h1>{t.console}</h1>
+        <p class="hero-copy">
+          {lang === "zh" ? "添加和管理文章，并查看每篇文章的浏览量。" : "Add and manage articles, and see views for every page."}
+        </p>
+      </div>
+      <div>
+        <a class="button secondary" href="/admin/#/collections/notes">{lang === "zh" ? "管理文章" : "Manage articles"}</a>
+        <a class="button" href="/admin/#/collections/notes/new">＋ {lang === "zh" ? "添加文章" : "New article"}</a>
+      </div>
+    </div>
+
+    {!apiUrl && (
+      <p class="status" id="connection-status">
+        {lang === "zh"
+          ? "当前为本地样式预览：浏览量使用示例数据。部署 API 后会自动显示真实数据。"
+          : "Local style preview: sample view data is shown until the API is deployed."}
+      </p>
+    )}
+
+    <div class="stats">
+      <div class="stat">
+        <span>{lang === "zh" ? "文章总数" : "Articles"}</span>
+        <strong>{entries.length}</strong>
+      </div>
+      <div class="stat">
+        <span>{lang === "zh" ? "总浏览量" : "Total views"}</span>
+        <strong id="total-views">—</strong>
+      </div>
+      <div class="stat">
+        <span>{lang === "zh" ? "最近更新" : "Last updated"}</span>
+        <strong style="font-size:1.15rem">{entries[0]?.data.date.toLocaleDateString(lang === "zh" ? "zh-CN" : "en-GB") || "—"}</strong>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>{lang === "zh" ? "文章" : "Article"}</th>
+            <th>{lang === "zh" ? "类型" : "Type"}</th>
+            <th>{lang === "zh" ? "状态" : "Status"}</th>
+            <th>{lang === "zh" ? "浏览量" : "Views"}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map((entry, index) => {
+            const slug = entry.id.replace(/^(zh|en)\//, "");
+            return (
+            <tr data-article-row data-slug={`${lang}/${slug}`} data-demo={128 - index * 31}>
+              <td>
+                <a href={`/${lang}/posts/${slug}/`}><strong>{entry.data.title}</strong></a>
+                <div class="meta">{entry.data.course}</div>
+              </td>
+              <td><span class="pill">{entry.data.type === "note" ? t.notes : t.tips}</span></td>
+              <td>{entry.data.published ? (lang === "zh" ? "已发布" : "Published") : (lang === "zh" ? "草稿" : "Draft")}</td>
+              <td data-view-cell>—</td>
+            </tr>
+          );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const shell = document.querySelector<HTMLElement>("#console");
+  const rows = [...document.querySelectorAll<HTMLElement>("[data-article-row]")];
+  const total = document.querySelector<HTMLElement>("#total-views");
+  const api = shell?.dataset.api;
+
+  const setCounts = (counts: Record<string, number>) => {
+    let sum = 0;
+    rows.forEach((row) => {
+      const slug = row.dataset.slug || "";
+      const count = counts[slug] ?? Number(row.dataset.demo || 0);
+      const cell = row.querySelector<HTMLElement>("[data-view-cell]");
+      if (cell) cell.textContent = count.toLocaleString();
+      sum += count;
+    });
+    if (total) total.textContent = sum.toLocaleString();
+  };
+
+  if (!api) {
+    setCounts({});
+  } else {
+    fetch(`${api}/api/stats`)
+      .then((response) => {
+        if (!response.ok) throw new Error("Stats unavailable");
+        return response.json();
+      })
+      .then((data) => setCounts(data.views || {}))
+      .catch(() => {
+        const status = document.querySelector<HTMLElement>("#connection-status");
+        if (status) status.textContent = "浏览量服务暂时不可用。";
+        setCounts({});
+      });
+  }
+</script>

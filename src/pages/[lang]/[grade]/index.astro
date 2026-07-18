@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { copy, grades, languages, semesters, type GradeId, type Lang } from "../../../data/site";
+
+export function getStaticPaths() {
+  return languages.flatMap((lang) =>
+    grades.map((grade) => ({ params: { lang, grade: grade.id } }))
+  );
+}
+
+const lang = Astro.params.lang as Lang;
+const gradeId = Astro.params.grade as GradeId;
+const grade = grades.find((item) => item.id === gradeId)!;
+const t = copy[lang];
+const message = grade.message?.[lang];
+---
+
+<BaseLayout lang={lang} title={grade.label[lang]}>
+  <div class="container page-head">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
+      <span>{grade.label[lang]}</span>
+    </nav>
+    <p class="eyebrow">{message ? (lang === "zh" ? "学姐的话" : "A note from your senior") : t.chooseSemester}</p>
+    <h1>{grade.label[lang]}</h1>
+    {message ? (
+      <p class="grade-message" set:html={message} />
+    ) : (
+      <p class="hero-copy">{grade.description[lang]}</p>
+    )}
+  </div>
+  {!message && (
+    <section class="container section">
+      <div class="two-grid">
+        {semesters.map((semester, index) => (
+          <a class="link-row" href={`/${lang}/${grade.id}/${semester.id}/`}>
+            <div>
+              <span class="code">0{index + 1}</span>
+              <h2>{semester.label[lang]}</h2>
+            </div>
+            <span aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>

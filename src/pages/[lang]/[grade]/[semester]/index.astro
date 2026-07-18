@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import {
+  copy,
+  courses,
+  grades,
+  languages,
+  semesters,
+  type GradeId,
+  type Lang,
+  type SemesterId
+} from "../../../../data/site";
+
+export function getStaticPaths() {
+  return languages.flatMap((lang) =>
+    grades.flatMap((grade) =>
+      semesters.map((semester) => ({
+        params: { lang, grade: grade.id, semester: semester.id }
+      }))
+    )
+  );
+}
+
+const lang = Astro.params.lang as Lang;
+const gradeId = Astro.params.grade as GradeId;
+const semesterId = Astro.params.semester as SemesterId;
+const grade = grades.find((item) => item.id === gradeId)!;
+const semester = semesters.find((item) => item.id === semesterId)!;
+const courseList = courses.filter((item) => item.grade === gradeId && item.semester === semesterId);
+const t = copy[lang];
+---
+
+<BaseLayout lang={lang} title={`${grade.label[lang]} · ${semester.label[lang]}`}>
+  <div class="container page-head">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
+      <span><a href={`/${lang}/${gradeId}/`}>{grade.label[lang]}</a></span>
+      <span>{semester.label[lang]}</span>
+    </nav>
+    <p class="eyebrow">{t.courses}</p>
+    <h1>{semester.label[lang]}</h1>
+    <p class="hero-copy">{grade.label[lang]} · {courseList.length} {lang === "zh" ? "门课程" : "courses"}</p>
+  </div>
+  <section class="container section">
+    {courseList.length ? (
+      <div class="two-grid">
+        {courseList.map((course) => (
+          <a class="link-row" href={`/${lang}/${gradeId}/${semesterId}/${course.slug}/`}>
+            <div>
+              <span class="code">{course.code}</span>
+              <h2>{course.title[lang]}</h2>
+              <p>{course.description[lang]}</p>
+            </div>
+            <span aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="status">{t.noContent}</p>
+    )}
+  </section>
+</BaseLayout>

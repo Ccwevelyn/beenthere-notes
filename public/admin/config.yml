@@ -1,0 +1,76 @@
+# base_url 部署后改成你的 Render API 服务地址。
+backend:
+  name: github
+  repo: Ccwevelyn/beenthere-notes
+  branch: main
+  base_url: https://beenthere-notes-api.onrender.com
+  auth_endpoint: auth
+
+local_backend: true
+locale: zh_Hans
+publish_mode: simple
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: notes
+    label: 文章
+    label_singular: 文章
+    folder: src/content/notes
+    path: "{{lang}}/{{slug}}"
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} · {{grade}} / {{semester}} / {{course}}"
+    fields:
+      - { label: 标题, name: title, widget: string }
+      - { label: 摘要, name: description, widget: text, hint: 用一两句话说明读者能获得什么 }
+      - label: 类型
+        name: type
+        widget: select
+        options:
+          - { label: 笔记, value: note }
+          - { label: Tip, value: tip }
+      - label: 语言
+        name: lang
+        widget: select
+        options:
+          - { label: 中文, value: zh }
+          - { label: English, value: en }
+      - label: 年级
+        name: grade
+        widget: select
+        options:
+          - { label: 大一, value: year-1 }
+          - { label: 大二, value: year-2 }
+          - { label: 大三, value: year-3 }
+          - { label: 大四, value: year-4 }
+      - label: 学期
+        name: semester
+        widget: select
+        options:
+          - { label: 上学期, value: fall }
+          - { label: 下学期, value: spring }
+      - label: 课程
+        name: course
+        widget: select
+        options:
+          - { label: 微积分, value: calculus }
+          - { label: 程序设计基础, value: programming }
+          - { label: 概率与统计, value: statistics }
+      - { label: 发布日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
+      - { label: 发布, name: published, widget: boolean, default: true }
+      - label: 正文
+        name: body
+        widget: markdown
+        hint: 支持文字排版，也可以直接插入图片
+      - label: 附件（PDF / 图片 / 其他文件）
+        name: attachments
+        widget: list
+        required: false
+        summary: "{{fields.label}}"
+        hint: 上传 PDF、手写笔记扫描件、截图等，会显示在文章底部
+        fields:
+          - { label: 显示名称, name: label, widget: string }
+          - { label: 文件, name: file, widget: file }

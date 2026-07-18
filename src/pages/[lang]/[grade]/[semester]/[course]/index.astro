@@ -1,0 +1,84 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../../../layouts/BaseLayout.astro";
+import {
+  copy,
+  courses,
+  grades,
+  languages,
+  semesters,
+  type GradeId,
+  type Lang,
+  type SemesterId
+} from "../../../../../data/site";
+
+export function getStaticPaths() {
+  return languages.flatMap((lang) =>
+    courses.map((course) => ({
+      params: {
+        lang,
+        grade: course.grade,
+        semester: course.semester,
+        course: course.slug
+      }
+    }))
+  );
+}
+
+const lang = Astro.params.lang as Lang;
+const gradeId = Astro.params.grade as GradeId;
+const semesterId = Astro.params.semester as SemesterId;
+const courseSlug = Astro.params.course!;
+const grade = grades.find((item) => item.id === gradeId)!;
+const semester = semesters.find((item) => item.id === semesterId)!;
+const course = courses.find((item) => item.slug === courseSlug)!;
+const entries = (await getCollection("notes"))
+  .filter((entry) =>
+    entry.data.published &&
+    entry.data.lang === lang &&
+    entry.data.grade === gradeId &&
+    entry.data.semester === semesterId &&
+    entry.data.course === courseSlug
+  )
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const notes = entries.filter((entry) => entry.data.type === "note");
+const tips = entries.filter((entry) => entry.data.type === "tip");
+const t = copy[lang];
+const postPath = (entryId: string) => `/${lang}/posts/${entryId.replace(/^(zh|en)\//, "")}/`;
+---
+
+<BaseLayout lang={lang} title={course.title[lang]}>
+  <div class="container page-head">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
+      <span><a href={`/${lang}/${gradeId}/`}>{grade.label[lang]}</a></span>
+      <span><a href={`/${lang}/${gradeId}/${semesterId}/`}>{semester.label[lang]}</a></span>
+      <span>{course.title[lang]}</span>
+    </nav>
+    <p class="eyebrow">{course.code}</p>
+    <h1>{course.title[lang]}</h1>
+    <p class="hero-copy">{course.description[lang]}</p>
+  </div>
+  <section class="container section">
+    <div class="content-columns">
+      <div class="content-list">
+        <h2>{t.notes} <span class="meta">({notes.length})</span></h2>
+        {notes.length ? notes.map((entry) => (
+          <a class="article-link" href={postPath(entry.id)}>
+            <h3>{entry.data.title}</h3>
+            <p class="meta">{entry.data.description}</p>
+          </a>
+        )) : <p class="status">{t.noContent}</p>}
+      </div>
+      <div class="content-list">
+        <h2>{t.tips} <span class="meta">({tips.length})</span></h2>
+        {tips.length ? tips.map((entry) => (
+          <a class="article-link" href={postPath(entry.id)}>
+            <h3>{entry.data.title}</h3>
+            <p class="meta">{entry.data.description}</p>
+          </a>
+        )) : <p class="status">{t.noContent}</p>}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

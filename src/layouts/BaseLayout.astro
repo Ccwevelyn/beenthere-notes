@@ -1,0 +1,61 @@
+---
+import "../styles/global.css";
+import { alternatePath, copy, grades, type Lang } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang: Lang;
+  pathname?: string;
+}
+
+const {
+  title = "BeenThere Notes",
+  description = "Notes and practical advice from someone who has been there.",
+  lang,
+  pathname = Astro.url.pathname
+} = Astro.props;
+const t = copy[lang];
+const fullTitle = title === "BeenThere Notes" ? title : `${title} — BeenThere Notes`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="container nav" aria-label="Main navigation">
+        <a class="brand" href={`/${lang}/`}>
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>BeenThere Notes</span>
+        </a>
+        <div class="nav-links">
+          <div class="nav-years">
+            {grades.map((grade) => (
+              <a href={`/${lang}/${grade.id}/`}>{grade.label[lang]}</a>
+            ))}
+          </div>
+          <a href={`/${lang}/author/`}>{t.author}</a>
+          <a href={`/${lang}/contribute/`}>{t.contribute}</a>
+          <a class="lang-link" href={alternatePath(pathname, lang)}>{t.language}</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <div class="container footer-row">
+        <span>© {new Date().getFullYear()} BeenThere Notes · <a href={`/${lang}/console/`}>{t.console}</a></span>
+        <span>{lang === "zh" ? "走过，所以愿意留下路标。" : "I have been there, so I left a signpost."}</span>
+      </div>
+    </footer>
+  </body>
+</html>
