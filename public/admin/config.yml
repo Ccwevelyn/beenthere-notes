@@ -91,7 +91,6 @@ collections:
           - { label: "COMP3114 · 信息系统项目", value: information-system-project }
           - { label: "COMP3117 · 分析数据设计与应用", value: analytical-data-design-applications }
           - { label: "COMP3118 · 数据科学与商业分析", value: data-science-business-analytics }
-          - { label: "MSEL3107 · 人际关系", value: interpersonal-relations }
       - { label: 发布日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
       - label: 显示顺序
         name: order

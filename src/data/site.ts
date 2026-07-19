@@ -246,14 +246,6 @@ export const courses = [
     code: "COMP3118",
     title: { zh: "数据科学与商业分析", en: "Data Science and Business Analytics" },
     description: { zh: "数据科学方法及其商业分析应用。", en: "Data science methods and their applications in business analytics." }
-  },
-  {
-    slug: "interpersonal-relations",
-    grade: "year-3" as const,
-    semester: "spring" as const,
-    code: "MSEL3107",
-    title: { zh: "人际关系", en: "Interpersonal Relations" },
-    description: { zh: "人际沟通、团队互动与关系管理。", en: "Interpersonal communication, group dynamics, and relationship skills." }
   }
 ];
 
