@@ -21,7 +21,7 @@ const message = grade.message?.[lang];
       <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
       <span>{grade.label[lang]}</span>
     </nav>
-    <p class="eyebrow">{message ? (lang === "zh" ? "学姐的话" : "A note from your senior") : t.chooseSemester}</p>
+    <p class="eyebrow">{message ? (lang === "zh" ? "一些肺腑之言" : "A few honest words") : t.chooseSemester}</p>
     <h1>{grade.label[lang]}</h1>
     {message ? (
       <p class="grade-message" set:html={message} />

@@ -54,8 +54,8 @@ export const grades: {
     label: { zh: "大一", en: "Year 1" },
     description: { zh: "基础课程与适应大学学习", en: "Foundations and settling into university study" },
     message: {
-      zh: '不好意思~ 学姐大一的时候没有好好学习，所以可能没有经验可以分享给大家！但是也欢迎其他厉害的同学多多<a href="/zh/contribute/">投稿</a>~ 不过，如果一定要说一句话，我希望弟弟妹妹们可以从大一开始就关注自己的GPA，尽早确定未来的方向和需要达到的GPA，把选择权握在自己手里。不要像我一样，一直在还之前的债~ 大一下的难度比起大一上学期会直线上升！所以，一定要提前打好预防针~ 一起加油！',
-      en: 'Sorry~ Your senior didn\'t study hard enough in Year 1, so there may not be much experience to share! Classmates who did well are very welcome to <a href="/en/contribute/">contribute</a>~ Still, if I have to say one thing: start watching your GPA from Year 1, figure out your direction early and the GPA you\'ll need, and keep the choice in your own hands. Don\'t be like me, always paying off old debts~ Spring of Year 1 gets much harder than fall! So get prepared early~ Let\'s go!'
+      zh: '不好意思~ 我大一的时候没有好好学习，所以可能没有经验可以分享给大家！但是也欢迎其他厉害的同学多多<a href="/zh/contribute/">投稿</a>~ 不过，如果一定要说一句话，我希望弟弟妹妹们可以从大一开始就关注自己的GPA，尽早确定未来的方向和需要达到的GPA，把选择权握在自己手里。不要像我一样，一直在还之前的债~ 大一下的难度比起大一上学期会直线上升！所以，一定要提前打好预防针~ 一起加油！',
+      en: 'Sorry~ I didn\'t study hard enough in Year 1, so there may not be much experience to share! Classmates who did well are very welcome to <a href="/en/contribute/">contribute</a>~ Still, if I have to say one thing: start watching your GPA from Year 1, figure out your direction early and the GPA you\'ll need, and keep the choice in your own hands. Don\'t be like me, always paying off old debts~ Spring of Year 1 gets much harder than fall! So get prepared early~ Let\'s go!'
     }
   },
   {
