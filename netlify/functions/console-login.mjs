@@ -10,7 +10,7 @@ export default async (req) => {
   const url = new URL(req.url);
   const next = url.searchParams.get("next") || "/zh/console/";
   const origin = siteOrigin(req);
-  const redirectUri = `${origin}/auth/console/callback`;
+  const redirectUri = `${origin}/auth/callback`;
   const state = crypto.randomBytes(24).toString("hex");
   const authorizeUrl = new URL("https://github.com/login/oauth/authorize");
   authorizeUrl.searchParams.set("client_id", clientId);

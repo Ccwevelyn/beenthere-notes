@@ -1,20 +1,9 @@
-function siteOrigin(req) {
-  const proto = req.headers.get("x-forwarded-proto") || "https";
-  const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
-  return `${proto}://${host}`.replace(/\/$/, "");
-}
-
-function parseCookies(header) {
-  return Object.fromEntries(
-    (header || "")
-      .split(";")
-      .filter(Boolean)
-      .map((item) => {
-        const [key, ...rest] = item.trim().split("=");
-        return [key, decodeURIComponent(rest.join("="))];
-      })
-  );
-}
+import {
+  allowedLogins,
+  createSessionCookie,
+  parseCookies,
+  siteOrigin
+} from "../lib/console-session.mjs";
 
 function renderOAuthResult(status, payload) {
   const message = JSON.stringify(`authorization:github:${status}:${JSON.stringify(payload)}`);
@@ -31,35 +20,20 @@ function renderOAuthResult(status, payload) {
 </script></body></html>`;
 }
 
-export default async (req) => {
+function clearConsoleCookies(headers) {
+  headers.append(
+    "Set-Cookie",
+    "console_oauth_state=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
+  );
+  headers.append(
+    "Set-Cookie",
+    "console_oauth_next=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
+  );
+}
+
+async function exchangeCode(req, code) {
   const clientId = process.env.GITHUB_CLIENT_ID;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
-  const url = new URL(req.url);
-  const code = url.searchParams.get("code");
-  const state = url.searchParams.get("state");
-  const cookies = parseCookies(req.headers.get("cookie"));
-  const clearCookie = "oauth_state=; Path=/auth; HttpOnly; Secure; SameSite=Lax; Max-Age=0";
-
-  if (!clientId || !clientSecret) {
-    return new Response(renderOAuthResult("error", { message: "GitHub OAuth is not configured" }), {
-      status: 503,
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Set-Cookie": clearCookie
-      }
-    });
-  }
-
-  if (!code || !state || state !== cookies.oauth_state) {
-    return new Response(renderOAuthResult("error", { message: "Invalid OAuth state" }), {
-      status: 400,
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-        "Set-Cookie": clearCookie
-      }
-    });
-  }
-
   const redirectUri = `${siteOrigin(req)}/auth/callback`;
   const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
     method: "POST",
@@ -75,9 +49,92 @@ export default async (req) => {
       redirect_uri: redirectUri
     })
   });
-  const tokenData = await tokenResponse.json();
-  const success = tokenResponse.ok && tokenData.access_token;
+  return tokenResponse.json();
+}
 
+export default async (req) => {
+  const clientId = process.env.GITHUB_CLIENT_ID;
+  const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+  const url = new URL(req.url);
+  const code = url.searchParams.get("code");
+  const state = url.searchParams.get("state");
+  const cookies = parseCookies(req.headers.get("cookie"));
+  const isConsole = Boolean(state && state === cookies.console_oauth_state);
+  const isCms = Boolean(state && state === cookies.oauth_state);
+
+  if (!clientId || !clientSecret) {
+    if (isConsole) {
+      const headers = new Headers({ "Content-Type": "text/html; charset=utf-8" });
+      clearConsoleCookies(headers);
+      return new Response("<p>GitHub OAuth is not configured</p>", { status: 503, headers });
+    }
+    return new Response(renderOAuthResult("error", { message: "GitHub OAuth is not configured" }), {
+      status: 503,
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Set-Cookie": "oauth_state=; Path=/auth; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
+      }
+    });
+  }
+
+  if (!code || !state || (!isConsole && !isCms)) {
+    if (cookies.console_oauth_state) {
+      const headers = new Headers({ "Content-Type": "text/html; charset=utf-8" });
+      clearConsoleCookies(headers);
+      return new Response("<p>Invalid OAuth state</p><p><a href='/zh/console/'>返回</a></p>", {
+        status: 400,
+        headers
+      });
+    }
+    return new Response(renderOAuthResult("error", { message: "Invalid OAuth state" }), {
+      status: 400,
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Set-Cookie": "oauth_state=; Path=/auth; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
+      }
+    });
+  }
+
+  const tokenData = await exchangeCode(req, code);
+
+  if (isConsole) {
+    const next = cookies.console_oauth_next
+      ? decodeURIComponent(cookies.console_oauth_next)
+      : "/zh/console/";
+    const headers = new Headers();
+    clearConsoleCookies(headers);
+
+    if (!tokenData.access_token) {
+      headers.set("Content-Type", "text/html; charset=utf-8");
+      return new Response(
+        `<p>${tokenData.error_description || tokenData.error || "GitHub login failed"}</p><p><a href="${next}">返回</a></p>`,
+        { status: 401, headers }
+      );
+    }
+
+    const userResponse = await fetch("https://api.github.com/user", {
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${tokenData.access_token}`,
+        "User-Agent": "BeenThere-Notes"
+      }
+    });
+    const user = await userResponse.json();
+    const login = String(user.login || "").toLowerCase();
+    if (!userResponse.ok || !login || !allowedLogins().includes(login)) {
+      headers.set("Content-Type", "text/html; charset=utf-8");
+      return new Response(
+        `<p>此 GitHub 账号无权访问浏览量面板。</p><p><a href="${next}">返回</a></p>`,
+        { status: 401, headers }
+      );
+    }
+
+    headers.set("Location", next.startsWith("/") ? next : "/zh/console/");
+    headers.append("Set-Cookie", createSessionCookie(user.login));
+    return new Response(null, { status: 302, headers });
+  }
+
+  const success = Boolean(tokenData.access_token);
   return new Response(
     renderOAuthResult(
       success ? "success" : "error",
@@ -89,7 +146,7 @@ export default async (req) => {
       status: success ? 200 : 401,
       headers: {
         "Content-Type": "text/html; charset=utf-8",
-        "Set-Cookie": clearCookie
+        "Set-Cookie": "oauth_state=; Path=/auth; HttpOnly; Secure; SameSite=Lax; Max-Age=0"
       }
     }
   );
