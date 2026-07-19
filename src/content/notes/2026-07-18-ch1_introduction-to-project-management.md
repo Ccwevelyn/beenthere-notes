@@ -112,25 +112,25 @@ eg.<!-- 这是一张图片，ocr 内容为： -->
 ![](https://cdn.nlark.com/yuque/0/2025/png/42556572/1756694627043-68213ad1-92a9-453d-b930-d74f236ecab8.png)
 
 ##### Why start a project ?
-1. **Market** **Demand**
-+ 由**大量用户或行业趋势**驱动
+- **Market Demand**
+  - 由**大量用户或行业趋势**驱动
     - Fuel shortage -> save energy -> efficient car
     - Demand for online food delivery -> Food delivery platform
-2. **Strategic opportunity / Business Need**
-    - New APP -> increase revenue
-3. **Customer** **Request**
-+  由**具体客户或用户群体**提出的明确需求，通常是定制化或针对性强的项目启动动因。 
-4. **Technological Advance**
-    - Implement Generative AI
-5. **Legal** requirement 
-    - Government regulation requires ...
-        * A new security software program
-6. **Social needs**
-+ 源于社会整体的福祉、健康、环境或公共安全等方面的需求，通常具有**公益性或政策导向**。  
-    - Disease -> Vaccine
-7. **Environmental Considerations**
-    - Old air conditioners -> energy-efficient one
-    - 排放污水前 remove waste substance
+- **Strategic opportunity / Business Need**
+  - New APP -> increase revenue
+- **Customer Request**
+  - 由**具体客户或用户群体**提出的明确需求，通常是定制化或针对性强的项目启动动因。
+- **Technological Advance**
+  - Implement Generative AI
+- **Legal requirement**
+  - Government regulation requires ...
+    - A new security software program
+- **Social needs**
+  - 源于社会整体的福祉、健康、环境或公共安全等方面的需求，通常具有**公益性或政策导向**。
+  - Disease -> Vaccine
+- **Environmental Considerations**
+  - Old air conditioners -> energy-efficient one
+  - 排放污水前 remove waste substance
 
 ---
 

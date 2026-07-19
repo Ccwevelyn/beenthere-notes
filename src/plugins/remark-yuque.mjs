@@ -64,8 +64,9 @@ function cleanYuque(md) {
   md = md.replace(/<\/?(?:u|span)[^>]*>/gi, "");
   md = repairBold(md);
   // Numbered Yuque sections → headings at H3 (same band as typical Yuque chapters).
-  // Depth is compacted to start at H2 in normalizeHeadingDepths().
-  md = md.replace(/^(?:\d+)\.\s+\*\*(.+?)\*\*\s*$/gm, "### $1");
+  // Only a single bold run on the line (e.g. `1. **Scope**`), not answer lists like
+  // `1. **Market** **Demand**` or bullets that belong under a question heading.
+  md = md.replace(/^(?:\d+)\.\s+\*\*([^*]+?)\*\*\s*$/gm, "### $1");
   md = md.replace(/[ \t]+\n/g, "\n");
   return md;
 }
