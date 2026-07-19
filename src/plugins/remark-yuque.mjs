@@ -3,9 +3,9 @@
  * - keep yellow highlights as <mark>
  * - unwrap other font tags
  * - repair broken **bold** (spaces inside markers, **** nests)
- * - turn "1. **Section**" into ## headings for TOC
- * - shift heading depths so the shallowest body heading is H2
- *   (page title is already H1; Yuque often starts at H3–H6)
+ * - turn "1. **Section**" into headings for TOC
+ * - compact Yuque H3–H6 outlines onto H2+
+ * - restore outline numbers (1 / 1.1 / 1.1.1) Yuque shows but does not export
  *
  * Must re-parse after string cleanup: remark plugins run after the first parse,
  * so editing file.value alone would not change the rendered tree.
@@ -103,6 +103,45 @@ function unwrapHeadingStrong(tree) {
   });
 }
 
+function headingPlainText(node) {
+  let text = "";
+  visit(node, "text", (child) => {
+    text += child.value;
+  });
+  return text.trim();
+}
+
+/**
+ * Yuque shows outline numbers (1 / 1.1 / 1.1.1) in the UI but does not export them.
+ * Re-add from heading depth so page + TOC match the familiar outline.
+ */
+function numberHeadings(tree) {
+  const counters = [0, 0, 0, 0, 0, 0, 0];
+
+  visit(tree, "heading", (node) => {
+    const depth = node.depth;
+    if (depth < 2 || depth > 6) return;
+
+    const existing = headingPlainText(node);
+    if (/^\d+(?:\.\d+)*\.?\s/.test(existing)) return;
+
+    counters[depth] += 1;
+    for (let i = depth + 1; i <= 6; i += 1) counters[i] = 0;
+
+    const parts = [];
+    for (let i = 2; i <= depth; i += 1) parts.push(counters[i]);
+    const label = parts.join(".");
+
+    node.children.unshift(
+      {
+        type: "strong",
+        children: [{ type: "text", value: label }]
+      },
+      { type: "text", value: " " }
+    );
+  });
+}
+
 export function remarkYuque() {
   return (tree, file) => {
     if (typeof file.value !== "string") return;
@@ -117,6 +156,7 @@ export function remarkYuque() {
 
     normalizeHeadingDepths(next);
     unwrapHeadingStrong(next);
+    numberHeadings(next);
     tree.children = next.children;
   };
 }
