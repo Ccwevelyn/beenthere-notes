@@ -1,5 +1,7 @@
 ---
-title: 8 Golden Role
+title: 8-Golden-Rules
+description: " 8-Golden-Rule 在本学期的学习中尤为重要，不仅是第一次 assignment
+  1的依据，更贯穿于期中、期末考试中。所以，充分理解其概念以及应用成为了必不可少的内容。"
 attachments:
   - label: PDF
     file: /uploads/the-8-golden-rules-of-interface-design.pdf
@@ -7,8 +9,8 @@ grade: year-3
 semester: fall
 course: human-factors-user-interfaces
 date: 2026-07-19
+order: 1
 type: note
-description: " "
 published: true
 ---
 1985 Ben Shneiderman
