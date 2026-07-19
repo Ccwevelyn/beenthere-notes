@@ -4,6 +4,8 @@
  * - unwrap other font tags
  * - repair broken **bold** (spaces inside markers, **** nests)
  * - turn "1. **Section**" into ## headings for TOC
+ * - shift heading depths so the shallowest body heading is H2
+ *   (page title is already H1; Yuque often starts at H3–H6)
  *
  * Must re-parse after string cleanup: remark plugins run after the first parse,
  * so editing file.value alone would not change the rendered tree.
@@ -11,6 +13,7 @@
 import { fromMarkdown } from "mdast-util-from-markdown";
 import { gfmFromMarkdown } from "mdast-util-gfm";
 import { gfm } from "micromark-extension-gfm";
+import { visit } from "unist-util-visit";
 
 function unwrapFonts(md) {
   let prev;
@@ -60,9 +63,44 @@ function cleanYuque(md) {
   md = unwrapFonts(md);
   md = md.replace(/<\/?(?:u|span)[^>]*>/gi, "");
   md = repairBold(md);
-  md = md.replace(/^(?:\d+)\.\s+\*\*(.+?)\*\*\s*$/gm, "## $1");
+  // Numbered Yuque sections → headings at H3 (same band as typical Yuque chapters).
+  // Depth is compacted to start at H2 in normalizeHeadingDepths().
+  md = md.replace(/^(?:\d+)\.\s+\*\*(.+?)\*\*\s*$/gm, "### $1");
   md = md.replace(/[ \t]+\n/g, "\n");
   return md;
+}
+
+/** Map used heading levels onto consecutive H2… so Yuque H3–H6 outlines become readable. */
+function normalizeHeadingDepths(tree) {
+  const depths = [];
+  visit(tree, "heading", (node) => {
+    depths.push(node.depth);
+  });
+  if (!depths.length) return;
+
+  const unique = [...new Set(depths)].sort((a, b) => a - b);
+  const mapping = new Map();
+  unique.forEach((depth, index) => {
+    mapping.set(depth, Math.min(6, 2 + index));
+  });
+
+  visit(tree, "heading", (node) => {
+    node.depth = mapping.get(node.depth) ?? node.depth;
+  });
+}
+
+/** Unwrap emphasis wrappers that only add noise inside headings. */
+function unwrapHeadingStrong(tree) {
+  visit(tree, "heading", (node) => {
+    let guard = 0;
+    while (
+      guard++ < 5 &&
+      node.children?.length === 1 &&
+      (node.children[0].type === "strong" || node.children[0].type === "emphasis")
+    ) {
+      node.children = node.children[0].children;
+    }
+  });
 }
 
 export function remarkYuque() {
@@ -77,6 +115,8 @@ export function remarkYuque() {
       mdastExtensions: [gfmFromMarkdown()]
     });
 
+    normalizeHeadingDepths(next);
+    unwrapHeadingStrong(next);
     tree.children = next.children;
   };
 }

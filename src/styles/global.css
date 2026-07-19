@@ -135,16 +135,116 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
   color: var(--green);
   border-left-color: var(--green);
 }
-.toc-depth-3 a { padding-left: 14px; font-size: .84rem; }
+.toc-depth-3 a { padding-left: 12px; font-size: .86rem; }
+.toc-depth-4 a { padding-left: 24px; font-size: .8rem; color: #8a938e; }
 .article-wrap { width: min(100%, 760px); margin: 0; padding: 0; }
 .article-wrap:not(.has-toc) { margin-inline: auto; }
 .article-wrap h1 { font-size: clamp(2.35rem, 6vw, 4.2rem); }
-.article-meta { display: flex; gap: 12px; align-items: center; margin: 20px 0 46px; color: var(--muted); font-size: .9rem; }
-.prose { font-family: "Noto Sans SC", "DM Sans", sans-serif; font-size: 1.03rem; }
-.prose h2 { margin-top: 2.6em; padding-bottom: .3em; border-bottom: 1px solid var(--line); scroll-margin-top: 96px; }
-.prose h3 { scroll-margin-top: 96px; }
-.prose blockquote { margin-inline: 0; padding: 12px 18px; border-left: 3px solid var(--amber); background: #f5f0e4; }
-.prose code { padding: 2px 5px; border-radius: 4px; background: #ecece6; }
+.article-meta { display: flex; gap: 12px; align-items: center; margin: 20px 0 18px; color: var(--muted); font-size: .9rem; }
+.article-pdf-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: center;
+  margin: 0 0 36px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.article-pdf-link {
+  color: var(--green);
+  font-weight: 600;
+  font-size: .92rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.article-pdf-anchor { color: var(--muted); font-size: .88rem; }
+.article-pdf-anchor:hover { color: var(--green); }
+
+.prose {
+  font-family: "Noto Sans SC", "DM Sans", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: #2a3330;
+  overflow-wrap: break-word;
+}
+.prose > :first-child { margin-top: 0; }
+.prose p { margin: 0 0 1.05em; }
+.prose :is(ul, ol) {
+  margin: 0 0 1.15em;
+  padding-left: 1.35em;
+}
+.prose li { margin: .35em 0; }
+.prose li > :is(ul, ol) { margin: .35em 0 .2em; }
+.prose :is(h2, h3, h4, h5, h6) {
+  scroll-margin-top: 96px;
+  line-height: 1.35;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
+.prose h2 {
+  margin: 2.4em 0 .7em;
+  padding-bottom: .35em;
+  border-bottom: 1px solid var(--line);
+  font-size: 1.55rem;
+  font-weight: 700;
+}
+.prose h3 {
+  margin: 2em 0 .55em;
+  font-size: 1.28rem;
+  font-weight: 700;
+}
+.prose h4 {
+  margin: 1.65em 0 .45em;
+  padding-left: .7em;
+  border-left: 3px solid color-mix(in srgb, var(--green), transparent 55%);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.prose h5 {
+  margin: 1.4em 0 .4em;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: #3a4742;
+}
+.prose h6 {
+  margin: 1.25em 0 .35em;
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.prose strong { font-weight: 700; color: var(--ink); }
+.prose a {
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose hr {
+  margin: 2.2em 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.prose blockquote {
+  margin: 0 0 1.2em;
+  padding: 12px 18px;
+  border-left: 3px solid var(--amber);
+  background: #f5f0e4;
+  color: #4a453c;
+}
+.prose code { padding: 2px 5px; border-radius: 4px; background: #ecece6; font-size: .92em; }
+.prose pre {
+  margin: 0 0 1.2em;
+  padding: 14px 16px;
+  overflow-x: auto;
+  border-radius: 10px;
+  background: #ecece6;
+  font-size: .9rem;
+  line-height: 1.55;
+}
+.prose pre code { padding: 0; background: transparent; }
 .prose img { max-width: 100%; height: auto; border-radius: 10px; }
 .prose mark {
   padding: 0 .15em;
@@ -152,6 +252,18 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
   background: #fde68a;
   color: inherit;
 }
+.prose table {
+  width: 100%;
+  margin: 0 0 1.3em;
+  font-size: .95rem;
+  line-height: 1.5;
+}
+.prose th,
+.prose td {
+  white-space: normal;
+  vertical-align: top;
+}
+.prose th { color: var(--ink); text-transform: none; letter-spacing: 0; font-size: .92rem; }
 
 .attachments { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); }
 .attachments h2 { font-size: 1.3rem; }

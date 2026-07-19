@@ -18,7 +18,9 @@ const { Content, headings } = await render(entry);
 const t = copy[lang];
 const course = courses.find((item) => item.slug === entry.data.course);
 const articleSlug = entry.id;
-const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
+// After Yuque heading normalize, body outline starts at H2; include H2–H4 in TOC.
+const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4);
+const pdfAttachments = entry.data.attachments.filter((item) => /\.pdf$/i.test(item.file));
 ---
 
 <BaseLayout lang={lang} title={entry.data.title} description={entry.data.description}>
@@ -62,11 +64,24 @@ const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 
           data-suffix={t.views}
         >— {t.views}</span>
       </div>
+      {pdfAttachments.length > 0 && (
+        <div class="article-pdf-bar">
+          {pdfAttachments.map((attachment) => (
+            <a class="article-pdf-link" href={attachment.file} target="_blank" rel="noopener">
+              {lang === "zh" ? "打开 PDF" : "Open PDF"}
+              {attachment.label ? ` · ${attachment.label}` : ""}
+            </a>
+          ))}
+          <a class="article-pdf-anchor" href="#attachments">
+            {lang === "zh" ? "页内预览" : "Preview below"}
+          </a>
+        </div>
+      )}
       <div class="prose">
         <Content />
       </div>
       {entry.data.attachments.length > 0 && (
-        <section class="attachments">
+        <section class="attachments" id="attachments">
           <h2>{lang === "zh" ? "附件" : "Attachments"}</h2>
           <ul>
             {entry.data.attachments.map((attachment) => {
