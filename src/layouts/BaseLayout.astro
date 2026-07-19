@@ -79,8 +79,10 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
         const renderCount = (count: number) => {
           counter.textContent = `${count.toLocaleString()} ${suffix}`;
         };
-        const key = `viewed:${slug}`;
-        const method = sessionStorage.getItem(key) ? "GET" : "POST";
+        const key = `viewedAt:${slug}`;
+        const cooldownMs = 60 * 60 * 1000; // 同一小时内重复打开不重复计数；跨时段再计一次
+        const last = Number(localStorage.getItem(key) || 0);
+        const method = Date.now() - last >= cooldownMs ? "POST" : "GET";
         fetch(`${apiBase()}/api/views/${encodeURIComponent(slug)}`, { method })
           .then((response) => {
             if (!response.ok) throw new Error("View service unavailable");
@@ -88,7 +90,7 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
           })
           .then((data) => {
             renderCount(Number(data.views || 0));
-            sessionStorage.setItem(key, "1");
+            if (method === "POST") localStorage.setItem(key, String(Date.now()));
           })
           .catch(() => {
             counter.textContent = `— ${suffix || ""}`.trim();

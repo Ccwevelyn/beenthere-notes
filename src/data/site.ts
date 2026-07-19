@@ -4,6 +4,16 @@ export type SemesterId = "fall" | "spring";
 
 export const languages: Lang[] = ["zh", "en"];
 
+/** Smaller order first; same order → newer date first. */
+export function sortNotesByDisplayOrder<
+  T extends { data: { order?: number; date: Date } }
+>(a: T, b: T) {
+  const orderA = a.data.order ?? 100;
+  const orderB = b.data.order ?? 100;
+  if (orderA !== orderB) return orderA - orderB;
+  return b.data.date.valueOf() - a.data.date.valueOf();
+}
+
 export const copy = {
   zh: {
     navYears: "按年级浏览",

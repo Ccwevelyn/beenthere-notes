@@ -77,6 +77,12 @@ collections:
           - { label: "COMP3118 · 数据科学与商业分析", value: data-science-business-analytics }
           - { label: "MSEL3107 · 人际关系", value: interpersonal-relations }
       - { label: 发布日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
+      - label: 显示顺序
+        name: order
+        widget: number
+        default: 100
+        value_type: int
+        hint: 数字越小越靠前（1 最先）。相同顺序时按发布日期从新到旧。
       - { label: 类型, name: type, widget: hidden, default: note }
       - { label: 摘要, name: description, widget: hidden, default: " " }
       - { label: 发布, name: published, widget: hidden, default: true }

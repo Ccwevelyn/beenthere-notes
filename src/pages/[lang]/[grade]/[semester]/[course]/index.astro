@@ -7,6 +7,7 @@ import {
   grades,
   languages,
   semesters,
+  sortNotesByDisplayOrder,
   type GradeId,
   type Lang,
   type SemesterId
@@ -39,7 +40,7 @@ const entries = (await getCollection("notes"))
     entry.data.semester === semesterId &&
     entry.data.course === courseSlug
   )
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  .sort(sortNotesByDisplayOrder);
 const notes = entries.filter((entry) => entry.data.type === "note");
 const tips = entries.filter((entry) => entry.data.type === "tip");
 const t = copy[lang];
