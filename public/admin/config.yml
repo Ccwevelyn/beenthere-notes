@@ -26,6 +26,11 @@ collections:
     summary: "{{title}} · {{course}}"
     fields:
       - { label: 标题, name: title, widget: string }
+      - label: 摘要
+        name: description
+        widget: text
+        required: false
+        hint: 显示在文章标题下方，列表页也会用到；可不填。
       - label: 正文
         name: body
         widget: markdown
@@ -84,5 +89,4 @@ collections:
         value_type: int
         hint: 数字越小越靠前（1 最先）。相同顺序时按发布日期从新到旧。
       - { label: 类型, name: type, widget: hidden, default: note }
-      - { label: 摘要, name: description, widget: hidden, default: " " }
       - { label: 发布, name: published, widget: hidden, default: true }
