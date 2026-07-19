@@ -1,5 +1,6 @@
 # 线上：用 GitHub 登录（Netlify Function 提供 /auth）。
 # base_url 在 Netlify 构建时由 scripts/write-admin-base-url.mjs 自动写入站点地址。
+# 已移除「语言」字段：文章中英文可混写，无需选择语言。
 backend:
   name: github
   repo: Ccwevelyn/beenthere-notes
