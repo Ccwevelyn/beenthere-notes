@@ -9,8 +9,7 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = copy[lang];
-const entries = (await getCollection("notes"))
-  .sort(sortNotesByDisplayOrder);
+const entries = (await getCollection("notes")).sort(sortNotesByDisplayOrder);
 ---
 
 <BaseLayout lang={lang} title={t.console}>
@@ -18,9 +17,11 @@ const entries = (await getCollection("notes"))
     <div class="console-top">
       <div>
         <p class="eyebrow">BeenThere Notes</p>
-        <h1>{t.console}</h1>
+        <h1>{lang === "zh" ? "浏览量面板" : "Views panel"}</h1>
         <p class="hero-copy">
-          {lang === "zh" ? "添加和管理文章，并查看每篇文章的浏览量。" : "Add and manage articles, and see views for every page."}
+          {lang === "zh"
+            ? "查看每篇文章的浏览次数。打开文章页会计 1 次；刷新或再次进入也会再计。"
+            : "Views per article. Each open of an article page counts once; refresh or revisit counts again."}
         </p>
       </div>
       <div>
@@ -50,6 +51,7 @@ const entries = (await getCollection("notes"))
       <table>
         <thead>
           <tr>
+            <th>{lang === "zh" ? "顺序" : "Order"}</th>
             <th>{lang === "zh" ? "文章" : "Article"}</th>
             <th>{lang === "zh" ? "类型" : "Type"}</th>
             <th>{lang === "zh" ? "状态" : "Status"}</th>
@@ -61,6 +63,7 @@ const entries = (await getCollection("notes"))
             const slug = entry.id;
             return (
             <tr data-article-row data-slug={slug}>
+              <td>{entry.data.order ?? 100}</td>
               <td>
                 <a href={`/${lang}/posts/${slug}/`}><strong>{entry.data.title}</strong></a>
                 <div class="meta">{entry.data.course}</div>

@@ -59,15 +59,7 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
       </div>
     </footer>
     <script>
-      const HOME = "/";
       let tocObserver: IntersectionObserver | null = null;
-
-      const keepUrlSimple = () => {
-        if (location.pathname.startsWith("/admin")) return;
-        if (location.pathname !== HOME || location.search || location.hash) {
-          history.replaceState(null, "", HOME);
-        }
-      };
 
       const apiBase = () => (document.body.dataset.api || "").replace(/\/$/, "");
 
@@ -79,18 +71,14 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
         const renderCount = (count: number) => {
           counter.textContent = `${count.toLocaleString()} ${suffix}`;
         };
-        const key = `viewedAt:${slug}`;
-        const cooldownMs = 60 * 60 * 1000; // 同一小时内重复打开不重复计数；跨时段再计一次
-        const last = Number(localStorage.getItem(key) || 0);
-        const method = Date.now() - last >= cooldownMs ? "POST" : "GET";
-        fetch(`${apiBase()}/api/views/${encodeURIComponent(slug)}`, { method })
+        // Every page open counts as one view.
+        fetch(`${apiBase()}/api/views/${encodeURIComponent(slug)}`, { method: "POST" })
           .then((response) => {
             if (!response.ok) throw new Error("View service unavailable");
             return response.json();
           })
           .then((data) => {
             renderCount(Number(data.views || 0));
-            if (method === "POST") localStorage.setItem(key, String(Date.now()));
           })
           .catch(() => {
             counter.textContent = `— ${suffix || ""}`.trim();
@@ -103,16 +91,23 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
         const rows = [...document.querySelectorAll<HTMLElement>("[data-article-row]")];
         const total = document.querySelector<HTMLElement>("#total-views");
         const status = document.querySelector<HTMLElement>("#connection-status");
+        const tbody = shell.querySelector("tbody");
         const setCounts = (counts: Record<string, number>) => {
           let sum = 0;
           rows.forEach((row) => {
             const slug = row.dataset.slug || "";
             const count = counts[slug] ?? 0;
+            row.dataset.views = String(count);
             const cell = row.querySelector<HTMLElement>("[data-view-cell]");
             if (cell) cell.textContent = count.toLocaleString();
             sum += count;
           });
           if (total) total.textContent = sum.toLocaleString();
+          if (tbody) {
+            [...rows]
+              .sort((a, b) => Number(b.dataset.views || 0) - Number(a.dataset.views || 0))
+              .forEach((row) => tbody.appendChild(row));
+          }
         };
         fetch(`${apiBase()}/api/stats`)
           .then((response) => {
@@ -126,7 +121,10 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
           .catch(() => {
             if (status) {
               status.hidden = false;
-              status.textContent = "浏览量服务暂时不可用（本地预览或接口未就绪）。";
+              status.textContent =
+                document.documentElement.lang === "zh"
+                  ? "浏览量服务暂时不可用（本地预览或接口未就绪）。"
+                  : "Views service unavailable.";
             }
             setCounts({});
           });
@@ -141,7 +139,6 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
             event.preventDefault();
             const id = decodeURIComponent(link.getAttribute("href")?.slice(1) || "");
             document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-            keepUrlSimple();
           });
         });
         const sections = tocLinks
@@ -168,13 +165,12 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
       };
 
       const enhancePage = () => {
-        keepUrlSimple();
         bindToc();
         bindViews();
         bindConsole();
       };
 
-      const swapTo = async (url: string) => {
+      const swapTo = async (url: string, { push = true } = {}) => {
         const response = await fetch(url, { headers: { Accept: "text/html" } });
         if (!response.ok) {
           location.href = url;
@@ -198,6 +194,7 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
         if (nextTitle) document.title = nextTitle.textContent || document.title;
         const nextLang = next.documentElement.getAttribute("lang");
         if (nextLang) document.documentElement.setAttribute("lang", nextLang);
+        if (push) history.pushState(null, "", url);
         window.scrollTo(0, 0);
         enhancePage();
       };
@@ -210,9 +207,14 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
         const url = new URL(link.href, location.href);
         if (url.origin !== location.origin) return;
         if (url.pathname.startsWith("/admin")) return;
+        if (url.hash && url.pathname === location.pathname) return;
 
         event.preventDefault();
         void swapTo(`${url.pathname}${url.search}`);
+      });
+
+      window.addEventListener("popstate", () => {
+        void swapTo(`${location.pathname}${location.search}`, { push: false });
       });
 
       enhancePage();
