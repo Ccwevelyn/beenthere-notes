@@ -53,7 +53,7 @@ const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 
       </nav>
       <span class="pill">{entry.data.type === "note" ? t.notes : t.tips}</span>
       <h1>{entry.data.title}</h1>
-      <p class="hero-copy">{entry.data.description}</p>
+      {entry.data.description.trim() && <p class="hero-copy">{entry.data.description}</p>}
       <div class="article-meta">
         <time datetime={entry.data.date.toISOString()}>{entry.data.date.toLocaleDateString(lang === "zh" ? "zh-CN" : "en-GB")}</time>
         <span>·</span>

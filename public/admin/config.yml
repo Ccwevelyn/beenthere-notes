@@ -1,6 +1,5 @@
 # 线上：用 GitHub 登录（Netlify Function 提供 /auth）。
 # base_url 在 Netlify 构建时由 scripts/write-admin-base-url.mjs 自动写入站点地址。
-# 本地开发：另开终端运行 npx decap-server，并保持 local_backend: true。
 backend:
   name: github
   repo: Ccwevelyn/beenthere-notes
@@ -26,14 +25,11 @@ collections:
     summary: "{{title}} · {{course}}"
     fields:
       - { label: 标题, name: title, widget: string }
-      - { label: 摘要, name: description, widget: text, hint: 用一两句话说明读者能获得什么 }
-      - label: 类型
-        name: type
-        widget: select
-        options:
-          - { label: 笔记, value: note }
-          - { label: Tip, value: tip }
-      - label: 年级（仅用于分类导航，不显示在正文）
+      - label: 正文
+        name: body
+        widget: markdown
+        hint: 从语雀直接复制粘贴即可，不用改格式，也不用上传 PDF。
+      - label: 年级
         name: grade
         widget: select
         options:
@@ -41,13 +37,13 @@ collections:
           - { label: 大二, value: year-2 }
           - { label: 大三, value: year-3 }
           - { label: 大四, value: year-4 }
-      - label: 学期（仅用于分类导航，不显示在正文）
+      - label: 学期
         name: semester
         widget: select
         options:
           - { label: 上学期, value: fall }
           - { label: 下学期, value: spring }
-      - label: 课程（仅用于分类导航）
+      - label: 课程
         name: course
         widget: select
         options:
@@ -72,17 +68,6 @@ collections:
           - { label: "COMP3118 · 数据科学与商业分析", value: data-science-business-analytics }
           - { label: "MSEL3107 · 人际关系", value: interpersonal-relations }
       - { label: 发布日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
-      - { label: 发布, name: published, widget: boolean, default: true }
-      - label: 正文（Markdown）
-        name: body
-        widget: markdown
-        hint: 用 ## 标题写章节，页面左侧会自动生成语雀式目录。中英文可混写。不必上传 PDF。
-      - label: 附件（可选）
-        name: attachments
-        widget: list
-        required: false
-        summary: "{{fields.label}}"
-        hint: 可选。正文 Markdown 即可；如需额外 PDF/图片再添加。
-        fields:
-          - { label: 显示名称, name: label, widget: string, required: false }
-          - { label: 文件, name: file, widget: file, required: false }
+      - { label: 类型, name: type, widget: hidden, default: note }
+      - { label: 摘要, name: description, widget: hidden, default: " " }
+      - { label: 发布, name: published, widget: hidden, default: true }
