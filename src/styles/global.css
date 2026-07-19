@@ -155,14 +155,48 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
 
 .attachments { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); }
 .attachments h2 { font-size: 1.3rem; }
-.attachments ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
-.attachments a { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); font-weight: 600; }
-.attachments a:hover { border-color: var(--green); }
-.attachments a .meta { margin-left: auto; font-weight: 400; }
+.attachments ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 18px; }
+.attachments > ul > li > a { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); font-weight: 600; }
+.attachments > ul > li > a:hover { border-color: var(--green); }
+.attachments > ul > li > a .meta { margin-left: auto; font-weight: 400; }
 .attachment-icon { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; padding: 6px 8px; border-radius: 8px; background: var(--green-soft); color: var(--green); font-size: .72rem; font-weight: 700; letter-spacing: .06em; }
 .attachments figure { margin: 0; }
 .attachments img { max-width: 100%; border: 1px solid var(--line); border-radius: 12px; }
-.attachments figcaption { margin-top: 8px; color: var(--muted); font-size: .88rem; }
+.attachments figcaption,
+.pdf-embed figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: .88rem;
+}
+.pdf-embed {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  padding: 0 0 12px;
+}
+.pdf-embed iframe {
+  display: block;
+  width: 100%;
+  height: min(80vh, 960px);
+  border: 0;
+  background: #f3f3ef;
+}
+.pdf-embed figcaption { padding: 0 14px; }
+.pdf-embed figcaption a { color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.4em 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
 
 .author-note { max-width: 720px; padding: 72px 0; }
 .author-note h1 { font-size: clamp(2.5rem, 7vw, 5rem); }

@@ -78,12 +78,31 @@ const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 
                 <li>
                   {isImage ? (
                     <figure>
-                      <img src={attachment.file} alt={attachment.label} loading="lazy" />
+                      <img
+                        src={attachment.file}
+                        alt={attachment.label}
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                      />
                       <figcaption>{attachment.label}</figcaption>
+                    </figure>
+                  ) : isPdf ? (
+                    <figure class="pdf-embed">
+                      <iframe
+                        src={`${attachment.file}#view=FitH`}
+                        title={attachment.label || "PDF"}
+                        loading="lazy"
+                      ></iframe>
+                      <figcaption>
+                        <span>{attachment.label || "PDF"}</span>
+                        <a href={attachment.file} target="_blank" rel="noopener">
+                          {lang === "zh" ? "新窗口打开 / 下载" : "Open / download"}
+                        </a>
+                      </figcaption>
                     </figure>
                   ) : (
                     <a href={attachment.file} target="_blank" rel="noopener">
-                      <span class="attachment-icon" aria-hidden="true">{isPdf ? "PDF" : "FILE"}</span>
+                      <span class="attachment-icon" aria-hidden="true">FILE</span>
                       <span>{attachment.label}</span>
                       <span class="meta">{lang === "zh" ? "点击查看 / 下载" : "View / download"}</span>
                     </a>
