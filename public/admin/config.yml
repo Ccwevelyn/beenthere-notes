@@ -26,6 +26,14 @@ collections:
     summary: "{{title}} · {{course}}"
     fields:
       - { label: 标题, name: title, widget: string }
+      - label: 类型
+        name: type
+        widget: select
+        default: note
+        options:
+          - { label: 笔记, value: note }
+          - { label: Tip, value: tip }
+        hint: Tip 会出现在课程页的 Tips 区；附件可选，不强制。
       - label: 摘要
         name: description
         widget: text
@@ -34,11 +42,12 @@ collections:
       - label: 正文
         name: body
         widget: markdown
-        hint: 可粘贴语雀 Markdown（含图片）。图片若仍不显示，改用下方上传 PDF，页面会直接内嵌预览。
-      - label: PDF / 图片附件（可选，会直接显示在文章里）
+        hint: 可粘贴语雀 Markdown（含图片）。图片若仍不显示，改用下方上传 PDF。
+      - label: PDF / 图片附件（可选）
         name: attachments
         widget: list
         required: false
+        hint: 笔记和 Tip 都可上传；不上传也能发布。
         summary: "{{fields.label}}"
         fields:
           - { label: 名称, name: label, widget: string, default: "PDF", required: false }
@@ -88,5 +97,4 @@ collections:
         default: 100
         value_type: int
         hint: 数字越小越靠前（1 最先）。相同顺序时按发布日期从新到旧。
-      - { label: 类型, name: type, widget: hidden, default: note }
       - { label: 发布, name: published, widget: hidden, default: true }
