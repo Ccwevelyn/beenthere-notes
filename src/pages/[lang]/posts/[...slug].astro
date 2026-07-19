@@ -17,7 +17,6 @@ const { entry, lang } = Astro.props;
 const { Content, headings } = await render(entry);
 const t = copy[lang];
 const course = courses.find((item) => item.slug === entry.data.course);
-const apiUrl = import.meta.env.PUBLIC_VIEWS_API_URL || "";
 const articleSlug = entry.id;
 const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
 ---
@@ -60,7 +59,6 @@ const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 
         <span
           id="view-count"
           data-slug={articleSlug}
-          data-api={apiUrl}
           data-suffix={t.views}
         >— {t.views}</span>
       </div>

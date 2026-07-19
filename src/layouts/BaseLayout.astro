@@ -17,6 +17,7 @@ const {
 } = Astro.props;
 const t = copy[lang];
 const fullTitle = title === "BeenThere Notes" ? title : `${title} — BeenThere Notes`;
+const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
 ---
 
 <!doctype html>
@@ -29,7 +30,7 @@ const fullTitle = title === "BeenThere Notes" ? title : `${title} — BeenThere 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{fullTitle}</title>
   </head>
-  <body>
+  <body data-api={viewsApi}>
     <header class="site-header">
       <nav class="container nav" aria-label="Main navigation">
         <a class="brand" href={`/${lang}/`}>
@@ -68,30 +69,29 @@ const fullTitle = title === "BeenThere Notes" ? title : `${title} — BeenThere 
         }
       };
 
+      const apiBase = () => (document.body.dataset.api || "").replace(/\/$/, "");
+
       const bindViews = () => {
         const counter = document.querySelector<HTMLElement>("#view-count");
         if (!counter) return;
-        const { slug, api, suffix } = counter.dataset;
+        const { slug, suffix } = counter.dataset;
+        if (!slug) return;
         const renderCount = (count: number) => {
           counter.textContent = `${count.toLocaleString()} ${suffix}`;
         };
-        if (!api || !slug) {
-          renderCount(Number(localStorage.getItem(`demo-views:${slug}`) || 128));
-          return;
-        }
         const key = `viewed:${slug}`;
         const method = sessionStorage.getItem(key) ? "GET" : "POST";
-        fetch(`${api}/api/views/${encodeURIComponent(slug)}`, { method })
+        fetch(`${apiBase()}/api/views/${encodeURIComponent(slug)}`, { method })
           .then((response) => {
             if (!response.ok) throw new Error("View service unavailable");
             return response.json();
           })
           .then((data) => {
-            renderCount(data.views);
+            renderCount(Number(data.views || 0));
             sessionStorage.setItem(key, "1");
           })
           .catch(() => {
-            counter.textContent = "";
+            counter.textContent = `— ${suffix || ""}`.trim();
           });
       };
 
@@ -100,31 +100,32 @@ const fullTitle = title === "BeenThere Notes" ? title : `${title} — BeenThere 
         if (!shell) return;
         const rows = [...document.querySelectorAll<HTMLElement>("[data-article-row]")];
         const total = document.querySelector<HTMLElement>("#total-views");
-        const api = shell.dataset.api;
+        const status = document.querySelector<HTMLElement>("#connection-status");
         const setCounts = (counts: Record<string, number>) => {
           let sum = 0;
           rows.forEach((row) => {
             const slug = row.dataset.slug || "";
-            const count = counts[slug] ?? Number(row.dataset.demo || 0);
+            const count = counts[slug] ?? 0;
             const cell = row.querySelector<HTMLElement>("[data-view-cell]");
             if (cell) cell.textContent = count.toLocaleString();
             sum += count;
           });
           if (total) total.textContent = sum.toLocaleString();
         };
-        if (!api) {
-          setCounts({});
-          return;
-        }
-        fetch(`${api}/api/stats`)
+        fetch(`${apiBase()}/api/stats`)
           .then((response) => {
             if (!response.ok) throw new Error("Stats unavailable");
             return response.json();
           })
-          .then((data) => setCounts(data.views || {}))
+          .then((data) => {
+            if (status) status.hidden = true;
+            setCounts(data.views || {});
+          })
           .catch(() => {
-            const status = document.querySelector<HTMLElement>("#connection-status");
-            if (status) status.textContent = "浏览量服务暂时不可用。";
+            if (status) {
+              status.hidden = false;
+              status.textContent = "浏览量服务暂时不可用（本地预览或接口未就绪）。";
+            }
             setCounts({});
           });
       };
