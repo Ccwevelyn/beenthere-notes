@@ -13,69 +13,89 @@ const entries = (await getCollection("notes")).sort(sortNotesByDisplayOrder);
 ---
 
 <BaseLayout lang={lang} title={t.console}>
-  <div class="container console-shell" id="console">
-    <div class="console-top">
-      <div>
-        <p class="eyebrow">BeenThere Notes</p>
-        <h1>{lang === "zh" ? "浏览量面板" : "Views panel"}</h1>
-        <p class="hero-copy">
-          {lang === "zh"
-            ? "查看每篇文章的浏览次数。打开文章页会计 1 次；刷新或再次进入也会再计。"
-            : "Views per article. Each open of an article page counts once; refresh or revisit counts again."}
-        </p>
-      </div>
-      <div>
-        <a class="button secondary" href="/admin/#/collections/notes">{lang === "zh" ? "管理文章" : "Manage articles"}</a>
-        <a class="button" href="/admin/#/collections/notes/new">＋ {lang === "zh" ? "添加文章" : "New article"}</a>
-      </div>
+  <div class="container console-shell" id="console" data-lang={lang}>
+    <div id="console-gate" class="console-gate">
+      <p class="eyebrow">BeenThere Notes</p>
+      <h1>{lang === "zh" ? "浏览量面板" : "Views panel"}</h1>
+      <p class="hero-copy">
+        {lang === "zh"
+          ? "仅站长可用。请用已授权的 GitHub 账号登录。"
+          : "Owner only. Sign in with the authorized GitHub account."}
+      </p>
+      <a class="button" id="console-login" href={`/auth/console?next=/${lang}/console/`}>
+        {lang === "zh" ? "用 GitHub 登录" : "Sign in with GitHub"}
+      </a>
+      <p class="status" id="console-gate-status" hidden></p>
     </div>
 
-    <p class="status" id="connection-status" hidden></p>
+    <div id="console-panel" hidden>
+      <div class="console-top">
+        <div>
+          <p class="eyebrow">BeenThere Notes</p>
+          <h1>{lang === "zh" ? "浏览量面板" : "Views panel"}</h1>
+          <p class="hero-copy">
+            {lang === "zh"
+              ? "查看每篇文章的浏览次数。打开文章页会计 1 次；刷新或再次进入也会再计。"
+              : "Views per article. Each open of an article page counts once; refresh or revisit counts again."}
+          </p>
+          <p class="meta" id="console-user"></p>
+        </div>
+        <div>
+          <button class="button secondary" type="button" id="console-logout">
+            {lang === "zh" ? "退出登录" : "Sign out"}
+          </button>
+          <a class="button secondary" href="/admin/#/collections/notes">{lang === "zh" ? "管理文章" : "Manage articles"}</a>
+          <a class="button" href="/admin/#/collections/notes/new">＋ {lang === "zh" ? "添加文章" : "New article"}</a>
+        </div>
+      </div>
 
-    <div class="stats">
-      <div class="stat">
-        <span>{lang === "zh" ? "文章总数" : "Articles"}</span>
-        <strong>{entries.length}</strong>
-      </div>
-      <div class="stat">
-        <span>{lang === "zh" ? "总浏览量" : "Total views"}</span>
-        <strong id="total-views">—</strong>
-      </div>
-      <div class="stat">
-        <span>{lang === "zh" ? "最近更新" : "Last updated"}</span>
-        <strong style="font-size:1.15rem">{entries[0]?.data.date.toLocaleDateString(lang === "zh" ? "zh-CN" : "en-GB") || "—"}</strong>
-      </div>
-    </div>
+      <p class="status" id="connection-status" hidden></p>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>{lang === "zh" ? "顺序" : "Order"}</th>
-            <th>{lang === "zh" ? "文章" : "Article"}</th>
-            <th>{lang === "zh" ? "类型" : "Type"}</th>
-            <th>{lang === "zh" ? "状态" : "Status"}</th>
-            <th>{lang === "zh" ? "浏览量" : "Views"}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry) => {
-            const slug = entry.id;
-            return (
-            <tr data-article-row data-slug={slug}>
-              <td>{entry.data.order ?? 100}</td>
-              <td>
-                <a href={`/${lang}/posts/${slug}/`}><strong>{entry.data.title}</strong></a>
-                <div class="meta">{entry.data.course}</div>
-              </td>
-              <td><span class="pill">{entry.data.type === "note" ? t.notes : t.tips}</span></td>
-              <td>{entry.data.published ? (lang === "zh" ? "已发布" : "Published") : (lang === "zh" ? "草稿" : "Draft")}</td>
-              <td data-view-cell>—</td>
+      <div class="stats">
+        <div class="stat">
+          <span>{lang === "zh" ? "文章总数" : "Articles"}</span>
+          <strong>{entries.length}</strong>
+        </div>
+        <div class="stat">
+          <span>{lang === "zh" ? "总浏览量" : "Total views"}</span>
+          <strong id="total-views">—</strong>
+        </div>
+        <div class="stat">
+          <span>{lang === "zh" ? "最近更新" : "Last updated"}</span>
+          <strong style="font-size:1.15rem">{entries[0]?.data.date.toLocaleDateString(lang === "zh" ? "zh-CN" : "en-GB") || "—"}</strong>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>{lang === "zh" ? "顺序" : "Order"}</th>
+              <th>{lang === "zh" ? "文章" : "Article"}</th>
+              <th>{lang === "zh" ? "类型" : "Type"}</th>
+              <th>{lang === "zh" ? "状态" : "Status"}</th>
+              <th>{lang === "zh" ? "浏览量" : "Views"}</th>
             </tr>
-          );
-          })}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {entries.map((entry) => {
+              const slug = entry.id;
+              return (
+              <tr data-article-row data-slug={slug}>
+                <td>{entry.data.order ?? 100}</td>
+                <td>
+                  <a href={`/${lang}/posts/${slug}/`}><strong>{entry.data.title}</strong></a>
+                  <div class="meta">{entry.data.course}</div>
+                </td>
+                <td><span class="pill">{entry.data.type === "note" ? t.notes : t.tips}</span></td>
+                <td>{entry.data.published ? (lang === "zh" ? "已发布" : "Published") : (lang === "zh" ? "草稿" : "Draft")}</td>
+                <td data-view-cell>—</td>
+              </tr>
+            );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </BaseLayout>

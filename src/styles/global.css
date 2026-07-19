@@ -305,6 +305,11 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
 .author-note a:hover { opacity: .85; }
 
 .console-shell { padding: 54px 0 80px; }
+.console-gate {
+  max-width: 520px;
+  padding: 28px 0 12px;
+}
+.console-gate .button { margin-top: 8px; }
 .console-top { display: flex; justify-content: space-between; gap: 24px; align-items: center; margin-bottom: 32px; }
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 9px; padding: 11px 16px; background: var(--green); color: white; cursor: pointer; font-weight: 600; }
 .button.secondary { border: 1px solid var(--line); background: var(--surface); color: var(--ink); }

@@ -1,13 +1,12 @@
 import { getStore } from "@netlify/blobs";
+import { readSession } from "../lib/console-session.mjs";
 
 function json(status, body) {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-store",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, OPTIONS"
+      "Cache-Control": "no-store"
     }
   });
 }
@@ -18,6 +17,10 @@ export default async (req) => {
   }
   if (req.method !== "GET") {
     return json(405, { error: "Method not allowed" });
+  }
+
+  if (!readSession(req)) {
+    return json(401, { error: "Unauthorized" });
   }
 
   const store = getStore("article-views");

@@ -88,10 +88,35 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
       const bindConsole = () => {
         const shell = document.querySelector<HTMLElement>("#console");
         if (!shell) return;
+        const gate = document.querySelector<HTMLElement>("#console-gate");
+        const panel = document.querySelector<HTMLElement>("#console-panel");
+        const gateStatus = document.querySelector<HTMLElement>("#console-gate-status");
+        const userLabel = document.querySelector<HTMLElement>("#console-user");
+        const logoutBtn = document.querySelector<HTMLButtonElement>("#console-logout");
         const rows = [...document.querySelectorAll<HTMLElement>("[data-article-row]")];
         const total = document.querySelector<HTMLElement>("#total-views");
         const status = document.querySelector<HTMLElement>("#connection-status");
         const tbody = shell.querySelector("tbody");
+        const lang = shell.dataset.lang || "zh";
+
+        const showGate = (message?: string) => {
+          if (gate) gate.hidden = false;
+          if (panel) panel.hidden = true;
+          if (gateStatus) {
+            gateStatus.hidden = !message;
+            gateStatus.textContent = message || "";
+          }
+        };
+
+        const showPanel = (user: string) => {
+          if (gate) gate.hidden = true;
+          if (panel) panel.hidden = false;
+          if (userLabel) {
+            userLabel.textContent =
+              lang === "zh" ? `已登录：${user}` : `Signed in as ${user}`;
+          }
+        };
+
         const setCounts = (counts: Record<string, number>) => {
           let sum = 0;
           rows.forEach((row) => {
@@ -109,12 +134,29 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
               .forEach((row) => tbody.appendChild(row));
           }
         };
-        fetch(`${apiBase()}/api/stats`)
+
+        logoutBtn?.addEventListener("click", () => {
+          fetch(`${apiBase()}/api/console-session`, { method: "DELETE", credentials: "same-origin" })
+            .finally(() => showGate());
+        });
+
+        fetch(`${apiBase()}/api/console-session`, { credentials: "same-origin" })
+          .then(async (response) => {
+            if (!response.ok) {
+              showGate();
+              return;
+            }
+            const data = await response.json();
+            showPanel(data.user || "");
+            return fetch(`${apiBase()}/api/stats`, { credentials: "same-origin" });
+          })
           .then((response) => {
+            if (!response) return;
             if (!response.ok) throw new Error("Stats unavailable");
             return response.json();
           })
           .then((data) => {
+            if (!data) return;
             if (status) status.hidden = true;
             setCounts(data.views || {});
           })
@@ -122,7 +164,7 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
             if (status) {
               status.hidden = false;
               status.textContent =
-                document.documentElement.lang === "zh"
+                lang === "zh"
                   ? "浏览量服务暂时不可用（本地预览或接口未就绪）。"
                   : "Views service unavailable.";
             }
@@ -207,6 +249,7 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
         const url = new URL(link.href, location.href);
         if (url.origin !== location.origin) return;
         if (url.pathname.startsWith("/admin")) return;
+        if (url.pathname.startsWith("/auth")) return;
         if (url.hash && url.pathname === location.pathname) return;
 
         event.preventDefault();
