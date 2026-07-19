@@ -33,7 +33,7 @@ collections:
         options:
           - { label: 笔记, value: note }
           - { label: Tip, value: tip }
-        hint: Tip 会出现在课程页的 Tips 区；附件可选，不强制。
+        hint: Tip 会出现在课程页的 Tips 区；可不上传 PDF，只写文字即可。
       - label: 摘要
         name: description
         widget: text
@@ -42,16 +42,18 @@ collections:
       - label: 正文
         name: body
         widget: markdown
-        hint: 可粘贴语雀 Markdown（含图片）。图片若仍不显示，改用下方上传 PDF。
-      - label: PDF / 图片附件（可选）
+        required: false
+        hint: 可只写文字（Tip 常用）。也可粘贴语雀 Markdown；需要时再在下方上传 PDF。
+      - label: PDF / 图片附件（可选，可不填）
         name: attachments
         widget: list
         required: false
-        hint: 笔记和 Tip 都可上传；不上传也能发布。
+        allow_add: true
+        hint: Tip / 笔记都可不上传附件，直接发布。
         summary: "{{fields.label}}"
         fields:
           - { label: 名称, name: label, widget: string, default: "PDF", required: false }
-          - { label: 文件, name: file, widget: file }
+          - { label: 文件, name: file, widget: file, required: false }
       - label: 年级
         name: grade
         widget: select

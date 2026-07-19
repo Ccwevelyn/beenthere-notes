@@ -55,7 +55,10 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
     <footer>
       <div class="container footer-row">
         <span>© {new Date().getFullYear()} BeenThere Notes · <a href={`/${lang}/console/`}>{t.console}</a></span>
-        <span>{lang === "zh" ? "走过，所以愿意留下路标。" : "I have been there, so I left a signpost."}</span>
+        <span>
+          {lang === "zh" ? "联系: " : "Contact: "}
+          <a href="mailto:beenthere.notes@outlook.com">beenthere.notes@outlook.com</a>
+        </span>
       </div>
     </footer>
     <script>
