@@ -102,12 +102,60 @@ export const courses = [
     description: { zh: "从语法基础到调试与考试策略。", en: "From syntax basics to debugging and exam strategy." }
   },
   {
-    slug: "statistics",
+    slug: "database-design",
+    grade: "year-2" as const,
+    semester: "fall" as const,
+    code: "COMP2111",
+    title: { zh: "数据库设计", en: "Database Design" },
+    description: { zh: "数据库建模、设计与基本应用。", en: "Database modelling, design, and core applications." }
+  },
+  {
+    slug: "data-structures-algorithms",
+    grade: "year-2" as const,
+    semester: "fall" as const,
+    code: "COMP2112",
+    title: { zh: "数据结构与算法", en: "Data Structures and Algorithms" },
+    description: { zh: "常用数据结构、算法与复杂度分析。", en: "Common data structures, algorithms, and complexity analysis." }
+  },
+  {
+    slug: "operating-systems",
+    grade: "year-2" as const,
+    semester: "fall" as const,
+    code: "COMP2113",
+    title: { zh: "操作系统", en: "Operating Systems" },
+    description: { zh: "操作系统原理、进程调度与资源管理。", en: "Operating system principles, scheduling, and resource management." }
+  },
+  {
+    slug: "ethics-professional-issues",
     grade: "year-2" as const,
     semester: "spring" as const,
-    code: "STAT 201",
-    title: { zh: "概率与统计", en: "Probability & Statistics" },
-    description: { zh: "常用分布、推断方法与易错点。", en: "Distributions, inference, and common pitfalls." }
+    code: "COMP2114",
+    title: { zh: "电脑专业道德概论", en: "Ethics and Professional Issues in Computing" },
+    description: { zh: "计算机专业伦理与职业责任。", en: "Professional ethics and responsibilities in computing." }
+  },
+  {
+    slug: "web-design-development",
+    grade: "year-2" as const,
+    semester: "spring" as const,
+    code: "COMP2115",
+    title: { zh: "网页设计与开发", en: "Web Design and Development" },
+    description: { zh: "网页结构、样式与基础开发。", en: "Web structure, styling, and foundational development." }
+  },
+  {
+    slug: "software-engineering",
+    grade: "year-2" as const,
+    semester: "spring" as const,
+    code: "COMP2116",
+    title: { zh: "软件工程", en: "Software Engineering" },
+    description: { zh: "软件工程流程、方法与实践。", en: "Software engineering processes, methods, and practice." }
+  },
+  {
+    slug: "computer-networks",
+    grade: "year-2" as const,
+    semester: "spring" as const,
+    code: "COMP2117",
+    title: { zh: "电脑网络", en: "Computer Networks" },
+    description: { zh: "网络协议、体系结构与基础应用。", en: "Network protocols, architecture, and core applications." }
   },
   {
     slug: "project-management",

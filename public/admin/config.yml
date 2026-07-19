@@ -58,7 +58,13 @@ collections:
         options:
           - { label: 微积分, value: calculus }
           - { label: 程序设计基础, value: programming }
-          - { label: 概率与统计, value: statistics }
+          - { label: "COMP2111 · 数据库设计", value: database-design }
+          - { label: "COMP2112 · 数据结构与算法", value: data-structures-algorithms }
+          - { label: "COMP2113 · 操作系统", value: operating-systems }
+          - { label: "COMP2114 · 电脑专业道德概论", value: ethics-professional-issues }
+          - { label: "COMP2115 · 网页设计与开发", value: web-design-development }
+          - { label: "COMP2116 · 软件工程", value: software-engineering }
+          - { label: "COMP2117 · 电脑网络", value: computer-networks }
           - { label: "COMP3112 · 项目管理", value: project-management }
           - { label: "COMP3115 · 人机接口技术", value: human-factors-user-interfaces }
           - { label: "MENG3111 · 科学传播", value: science-communications }
