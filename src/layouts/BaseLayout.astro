@@ -57,5 +57,162 @@ const fullTitle = title === "BeenThere Notes" ? title : `${title} — BeenThere 
         <span>{lang === "zh" ? "走过，所以愿意留下路标。" : "I have been there, so I left a signpost."}</span>
       </div>
     </footer>
+    <script>
+      const HOME = "/";
+      let tocObserver: IntersectionObserver | null = null;
+
+      const keepUrlSimple = () => {
+        if (location.pathname.startsWith("/admin")) return;
+        if (location.pathname !== HOME || location.search || location.hash) {
+          history.replaceState(null, "", HOME);
+        }
+      };
+
+      const bindViews = () => {
+        const counter = document.querySelector<HTMLElement>("#view-count");
+        if (!counter) return;
+        const { slug, api, suffix } = counter.dataset;
+        const renderCount = (count: number) => {
+          counter.textContent = `${count.toLocaleString()} ${suffix}`;
+        };
+        if (!api || !slug) {
+          renderCount(Number(localStorage.getItem(`demo-views:${slug}`) || 128));
+          return;
+        }
+        const key = `viewed:${slug}`;
+        const method = sessionStorage.getItem(key) ? "GET" : "POST";
+        fetch(`${api}/api/views/${encodeURIComponent(slug)}`, { method })
+          .then((response) => {
+            if (!response.ok) throw new Error("View service unavailable");
+            return response.json();
+          })
+          .then((data) => {
+            renderCount(data.views);
+            sessionStorage.setItem(key, "1");
+          })
+          .catch(() => {
+            counter.textContent = "";
+          });
+      };
+
+      const bindConsole = () => {
+        const shell = document.querySelector<HTMLElement>("#console");
+        if (!shell) return;
+        const rows = [...document.querySelectorAll<HTMLElement>("[data-article-row]")];
+        const total = document.querySelector<HTMLElement>("#total-views");
+        const api = shell.dataset.api;
+        const setCounts = (counts: Record<string, number>) => {
+          let sum = 0;
+          rows.forEach((row) => {
+            const slug = row.dataset.slug || "";
+            const count = counts[slug] ?? Number(row.dataset.demo || 0);
+            const cell = row.querySelector<HTMLElement>("[data-view-cell]");
+            if (cell) cell.textContent = count.toLocaleString();
+            sum += count;
+          });
+          if (total) total.textContent = sum.toLocaleString();
+        };
+        if (!api) {
+          setCounts({});
+          return;
+        }
+        fetch(`${api}/api/stats`)
+          .then((response) => {
+            if (!response.ok) throw new Error("Stats unavailable");
+            return response.json();
+          })
+          .then((data) => setCounts(data.views || {}))
+          .catch(() => {
+            const status = document.querySelector<HTMLElement>("#connection-status");
+            if (status) status.textContent = "浏览量服务暂时不可用。";
+            setCounts({});
+          });
+      };
+
+      const bindToc = () => {
+        tocObserver?.disconnect();
+        tocObserver = null;
+        const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>(".article-toc a[href^='#']")];
+        tocLinks.forEach((link) => {
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+            const id = decodeURIComponent(link.getAttribute("href")?.slice(1) || "");
+            document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+            keepUrlSimple();
+          });
+        });
+        const sections = tocLinks
+          .map((link) => {
+            const id = decodeURIComponent(link.getAttribute("href")?.slice(1) || "");
+            return id ? document.getElementById(id) : null;
+          })
+          .filter((node): node is HTMLElement => Boolean(node));
+        if (!tocLinks.length || !sections.length || !("IntersectionObserver" in window)) return;
+        tocObserver = new IntersectionObserver(
+          (entries) => {
+            const visible = entries
+              .filter((entry) => entry.isIntersecting)
+              .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+            if (!visible?.target.id) return;
+            tocLinks.forEach((link) => {
+              const id = decodeURIComponent(link.getAttribute("href")?.slice(1) || "");
+              link.classList.toggle("is-active", id === visible.target.id);
+            });
+          },
+          { rootMargin: "-20% 0px -65% 0px", threshold: [0, 0.25, 0.5, 1] }
+        );
+        sections.forEach((section) => tocObserver?.observe(section));
+      };
+
+      const enhancePage = () => {
+        keepUrlSimple();
+        bindToc();
+        bindViews();
+        bindConsole();
+      };
+
+      const swapTo = async (url: string) => {
+        const response = await fetch(url, { headers: { Accept: "text/html" } });
+        if (!response.ok) {
+          location.href = url;
+          return;
+        }
+        const html = await response.text();
+        const next = new DOMParser().parseFromString(html, "text/html");
+        const nextMain = next.querySelector("main");
+        const nextTitle = next.querySelector("title");
+        if (!nextMain) {
+          location.href = url;
+          return;
+        }
+        const nextHeader = next.querySelector(".site-header");
+        const nextFooter = next.querySelector("footer");
+        const currentHeader = document.querySelector(".site-header");
+        const currentFooter = document.querySelector("footer");
+        if (nextHeader && currentHeader) currentHeader.replaceWith(nextHeader);
+        document.querySelector("main")?.replaceWith(nextMain);
+        if (nextFooter && currentFooter) currentFooter.replaceWith(nextFooter);
+        if (nextTitle) document.title = nextTitle.textContent || document.title;
+        const nextLang = next.documentElement.getAttribute("lang");
+        if (nextLang) document.documentElement.setAttribute("lang", nextLang);
+        window.scrollTo(0, 0);
+        enhancePage();
+      };
+
+      document.addEventListener("click", (event) => {
+        const link = (event.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+        if (!link || event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (link.target === "_blank" || link.hasAttribute("download")) return;
+
+        const url = new URL(link.href, location.href);
+        if (url.origin !== location.origin) return;
+        if (url.pathname.startsWith("/admin")) return;
+
+        event.preventDefault();
+        void swapTo(`${url.pathname}${url.search}`);
+      });
+
+      enhancePage();
+    </script>
   </body>
 </html>

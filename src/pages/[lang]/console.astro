@@ -83,38 +83,3 @@ const apiUrl = import.meta.env.PUBLIC_VIEWS_API_URL || "";
     </div>
   </div>
 </BaseLayout>
-
-<script>
-  const shell = document.querySelector<HTMLElement>("#console");
-  const rows = [...document.querySelectorAll<HTMLElement>("[data-article-row]")];
-  const total = document.querySelector<HTMLElement>("#total-views");
-  const api = shell?.dataset.api;
-
-  const setCounts = (counts: Record<string, number>) => {
-    let sum = 0;
-    rows.forEach((row) => {
-      const slug = row.dataset.slug || "";
-      const count = counts[slug] ?? Number(row.dataset.demo || 0);
-      const cell = row.querySelector<HTMLElement>("[data-view-cell]");
-      if (cell) cell.textContent = count.toLocaleString();
-      sum += count;
-    });
-    if (total) total.textContent = sum.toLocaleString();
-  };
-
-  if (!api) {
-    setCounts({});
-  } else {
-    fetch(`${api}/api/stats`)
-      .then((response) => {
-        if (!response.ok) throw new Error("Stats unavailable");
-        return response.json();
-      })
-      .then((data) => setCounts(data.views || {}))
-      .catch(() => {
-        const status = document.querySelector<HTMLElement>("#connection-status");
-        if (status) status.textContent = "浏览量服务暂时不可用。";
-        setCounts({});
-      });
-  }
-</script>
