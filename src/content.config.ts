@@ -15,8 +15,18 @@ const notes = defineCollection({
     order: z.coerce.number().int().default(100),
     published: z.boolean().default(true),
     attachments: z
-      .array(z.object({ label: z.string(), file: z.string() }))
+      .array(
+        z.object({
+          label: z.string().optional().default("PDF"),
+          file: z.string().optional()
+        })
+      )
       .default([])
+      .transform((items) =>
+        items
+          .filter((item): item is { label: string; file: string } => Boolean(item.file))
+          .map((item) => ({ label: item.label || "PDF", file: item.file }))
+      )
   })
 });
 
