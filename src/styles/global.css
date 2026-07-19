@@ -146,6 +146,12 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
 .prose blockquote { margin-inline: 0; padding: 12px 18px; border-left: 3px solid var(--amber); background: #f5f0e4; }
 .prose code { padding: 2px 5px; border-radius: 4px; background: #ecece6; }
 .prose img { max-width: 100%; height: auto; border-radius: 10px; }
+.prose mark {
+  padding: 0 .15em;
+  border-radius: 3px;
+  background: #fde68a;
+  color: inherit;
+}
 
 .attachments { margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); }
 .attachments h2 { font-size: 1.3rem; }
