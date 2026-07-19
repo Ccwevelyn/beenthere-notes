@@ -35,7 +35,6 @@ const course = courses.find((item) => item.slug === courseSlug)!;
 const entries = (await getCollection("notes"))
   .filter((entry) =>
     entry.data.published &&
-    entry.data.lang === lang &&
     entry.data.grade === gradeId &&
     entry.data.semester === semesterId &&
     entry.data.course === courseSlug
@@ -44,7 +43,7 @@ const entries = (await getCollection("notes"))
 const notes = entries.filter((entry) => entry.data.type === "note");
 const tips = entries.filter((entry) => entry.data.type === "tip");
 const t = copy[lang];
-const postPath = (entryId: string) => `/${lang}/posts/${entryId.replace(/^(zh|en)\//, "")}/`;
+const postPath = (entryId: string) => `/${lang}/posts/${entryId}/`;
 ---
 
 <BaseLayout lang={lang} title={course.title[lang]}>

@@ -1,18 +1,19 @@
----
+﻿---
 title: The 8 Golden Rules of Interface Design
-description: 8 Golden Rules 在 HCI 中十分重要，不仅是第一次作业的主要依据，也会在期中/期末考试有所体现。所以，理解 8
-  Golden Rules 至关重要！
+description: 8 Golden Rules 在 HCI 中十分重要，不仅是第一次作业的主要依据，也会在期中/期末考试有所体现。所以，理解 8 Golden Rules 至关重要！
 type: note
-lang: zh
 grade: year-3
 semester: fall
 course: human-factors-user-interfaces
 date: 2026-07-19
 published: true
 attachments:
-  - file: the-8-golden-rules-of-interface-design.pdf
-    label: 8-golden-rule
+  - file: /uploads/the-8-golden-rules-of-interface-design.pdf
+    label: 8 Golden Rules PDF
 ---
+
+## 背景
+
 1985 Ben Shneiderman
 
 [https://youtu.be/INY_M3Ebtck?si=ZfVcA6OIsx5VlGLq](https://youtu.be/INY_M3Ebtck?si=ZfVcA6OIsx5VlGLq)
@@ -20,8 +21,7 @@ attachments:
 <!-- 这是一张图片，ocr 内容为： -->
 ![](https://cdn.nlark.com/yuque/0/2025/png/42556572/1760667305076-187fdb13-b555-4d87-8ba3-1cc66a97036c.png)
 
-1. **<font style="color:#2F4BDA;">Strive for consistency</font>**
-
+## Strive for consistency
 **<font style="color:rgb(0, 0, 0);">Consistent sequences of actions</font>**<font style="color:rgb(0, 0, 0);"> should be required in similar situations;</font>
 
 + <font style="color:rgb(0, 0, 0);">在类似的情境中，用户执行的操作流程应该保持一致。</font>
@@ -45,8 +45,7 @@ attachments:
 
 ---
 
-2. **<font style="color:#2F4BDA;">Cater to universal usability</font>**
-
+## Cater to universal usability
 <font style="color:rgb(0, 0, 0);">Recognize the needs of </font>**<font style="color:rgb(0, 0, 0);">diverse</font>**<font style="color:rgb(0, 0, 0);"> users and design for plasticity, facilitating transformation of content. </font>
 
 **<font style="color:rgb(0, 0, 0);">Novice</font>**<font style="color:rgb(0, 0, 0);"> 初学者 to </font>**<font style="color:rgb(0, 0, 0);">expert</font>**<font style="color:rgb(0, 0, 0);"> differences, </font>**<font style="color:rgb(0, 0, 0);">age</font>**<font style="color:rgb(0, 0, 0);"> ranges, </font>**<font style="color:rgb(0, 0, 0);">disabilities</font>**<font style="color:rgb(0, 0, 0);">, </font>**<font style="color:rgb(0, 0, 0);">international variations</font>**<font style="color:rgb(0, 0, 0);">, and technological diversity each enrich the spectrum of requirements that guides design. </font>
@@ -71,8 +70,7 @@ attachments:
 
 ---
 
-3. **<font style="color:#2F4BDA;">Offer informative feedback</font>**
-
+## Offer informative feedback
 <font style="color:rgb(0, 0, 0);">For </font>**<font style="color:rgb(0, 0, 0);">every user action</font>**<font style="color:rgb(0, 0, 0);">, there should be an </font>**<font style="color:rgb(0, 0, 0);">interface feedback</font>**<font style="color:rgb(0, 0, 0);">. </font>
 
 <font style="color:rgb(0, 0, 0);">For</font>**<font style="color:#DF2A3F;"> frequent and minor actions</font>**<font style="color:rgb(0, 0, 0);">, the response can be modest 适中, whereas for </font>**<font style="color:#DF2A3F;">infrequent and major actions</font>**<font style="color:rgb(0, 0, 0);">, the response should be more substantial. </font>
@@ -95,8 +93,7 @@ attachments:
 
 ---
 
-4. **<font style="color:#2F4BDA;">Design dialogs to yield closure  设计对话流程以实现闭合感  </font>**
-
+## Design dialogs to yield closure  设计对话流程以实现闭合感  
 **<font style="color:rgb(0, 0, 0);">Sequences of actions</font>**<font style="color:rgb(0, 0, 0);"> should be organized into groups with a </font>**<font style="color:rgb(0, 0, 0);">beginning, middle, and end</font>**<font style="color:rgb(0, 0, 0);">. </font>
 
 <font style="color:rgb(0, 0, 0);">Informative </font>**<font style="color:rgb(0, 0, 0);">feedback</font>**<font style="color:rgb(0, 0, 0);"> </font>**<font style="color:rgb(0, 0, 0);">at the completion of a group of actions</font>**<font style="color:rgb(0, 0, 0);"> gives users the satisfaction of accomplishment, a sense of relief, a signal to drop contingency plans from their minds, and an indicator to prepare for the next group of actions. </font>
@@ -117,8 +114,7 @@ attachments:
 
 ---
 
-5. **<font style="color:#2F4BDA;">Prevent errors</font>**
-
+## Prevent errors
 <font style="color:rgb(0, 0, 0);">As much as possible, design the interface so that </font>**<font style="color:rgb(0, 0, 0);">users cannot make serious errors</font>**<font style="color:rgb(0, 0, 0);">;</font>
 
 <font style="color:rgb(0, 0, 0);">设计目标是“</font><u><font style="color:rgb(0, 0, 0);">防错优先”</font></u>**<u><font style="color:rgb(0, 0, 0);">（Error Prevention）</font></u>**<font style="color:rgb(0, 0, 0);">，而不是“事后纠错”</font>
@@ -143,8 +139,7 @@ attachments:
 
 ---
 
-6. **<font style="color:#2F4BDA;">Permit easy reversal of actions</font>**
-
+## Permit easy reversal of actions
 <font style="color:rgb(0, 0, 0);">As much as possible, actions should be</font>**<font style="color:rgb(0, 0, 0);"> reversible</font>**<font style="color:rgb(0, 0, 0);">. </font>
 
 <font style="color:rgb(0, 0, 0);">This feature relieves anxiety, since users know that errors can be undone, and encourages exploration of unfamiliar options. </font>
@@ -155,8 +150,7 @@ attachments:
 
 ---
 
-7. **<font style="color:#2F4BDA;">Keep users in control</font>**
-
+## Keep users in control
 <font style="color:rgb(0, 0, 0);">Experienced users strongly desire the sense that they are </font>**<font style="color:rgb(0, 0, 0);">in charge of the interface </font>**<font style="color:rgb(0, 0, 0);">and that the interface responds to their actions. -> 页面听话</font>
 
 +  Customizable layout  
@@ -176,8 +170,7 @@ attachments:
 
 ---
 
-8. **<font style="color:#2F4BDA;">Reduce short-term memory load</font>**
-
+## Reduce short-term memory load
 <font style="color:rgb(0, 0, 0);">Humans' limited capacity for information processing in short-term memory (the rule of thumb is that people can remember 'seven plus or minus two chunks' of information 经验法则是人们能记住“七个上下两个信息块”) </font>
 
 <font style="color:rgb(0, 0, 0);">It requires that designers </font>**<font style="color:rgb(0, 0, 0);">avoid</font>**<font style="color:rgb(0, 0, 0);"> interfaces in which </font>**<font style="color:rgb(0, 0, 0);">users must remember information from one display and then use that information on another display</font>**<font style="color:rgb(0, 0, 0);">.</font>

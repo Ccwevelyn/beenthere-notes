@@ -2,7 +2,6 @@
 title: 考场上先检查这三件事
 description: 用于展示 Tips 区块的示例文章。
 type: tip
-lang: zh
 grade: year-1
 semester: fall
 course: calculus

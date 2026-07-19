@@ -19,12 +19,11 @@ collections:
     label: 文章
     label_singular: 文章
     folder: src/content/notes
-    path: "{{lang}}/{{slug}}"
     create: true
     extension: md
     format: frontmatter
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    summary: "{{title}} · {{grade}} / {{semester}} / {{course}}"
+    summary: "{{title}} · {{course}}"
     fields:
       - { label: 标题, name: title, widget: string }
       - { label: 摘要, name: description, widget: text, hint: 用一两句话说明读者能获得什么 }
@@ -34,13 +33,7 @@ collections:
         options:
           - { label: 笔记, value: note }
           - { label: Tip, value: tip }
-      - label: 语言
-        name: lang
-        widget: select
-        options:
-          - { label: 中文, value: zh }
-          - { label: English, value: en }
-      - label: 年级
+      - label: 年级（仅用于分类导航，不显示在正文）
         name: grade
         widget: select
         options:
@@ -48,13 +41,13 @@ collections:
           - { label: 大二, value: year-2 }
           - { label: 大三, value: year-3 }
           - { label: 大四, value: year-4 }
-      - label: 学期
+      - label: 学期（仅用于分类导航，不显示在正文）
         name: semester
         widget: select
         options:
           - { label: 上学期, value: fall }
           - { label: 下学期, value: spring }
-      - label: 课程
+      - label: 课程（仅用于分类导航）
         name: course
         widget: select
         options:
@@ -80,16 +73,16 @@ collections:
           - { label: "MSEL3107 · 人际关系", value: interpersonal-relations }
       - { label: 发布日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
       - { label: 发布, name: published, widget: boolean, default: true }
-      - label: 正文
+      - label: 正文（Markdown）
         name: body
         widget: markdown
-        hint: 支持文字排版，也可以直接插入图片
-      - label: 附件（PDF / 图片 / 其他文件）
+        hint: 用 ## 标题写章节，页面左侧会自动生成语雀式目录。中英文可混写。不必上传 PDF。
+      - label: 附件（可选）
         name: attachments
         widget: list
         required: false
         summary: "{{fields.label}}"
-        hint: 上传 PDF、手写笔记扫描件、截图等，会显示在文章底部
+        hint: 可选。正文 Markdown 即可；如需额外 PDF/图片再添加。
         fields:
-          - { label: 显示名称, name: label, widget: string }
-          - { label: 文件, name: file, widget: file }
+          - { label: 显示名称, name: label, widget: string, required: false }
+          - { label: 文件, name: file, widget: file, required: false }

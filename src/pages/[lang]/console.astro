@@ -10,7 +10,6 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const t = copy[lang];
 const entries = (await getCollection("notes"))
-  .filter((entry) => entry.data.lang === lang)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const apiUrl = import.meta.env.PUBLIC_VIEWS_API_URL || "";
 ---
@@ -66,9 +65,9 @@ const apiUrl = import.meta.env.PUBLIC_VIEWS_API_URL || "";
         </thead>
         <tbody>
           {entries.map((entry, index) => {
-            const slug = entry.id.replace(/^(zh|en)\//, "");
+            const slug = entry.id;
             return (
-            <tr data-article-row data-slug={`${lang}/${slug}`} data-demo={128 - index * 31}>
+            <tr data-article-row data-slug={slug} data-demo={128 - index * 31}>
               <td>
                 <a href={`/${lang}/posts/${slug}/`}><strong>{entry.data.title}</strong></a>
                 <div class="meta">{entry.data.course}</div>
