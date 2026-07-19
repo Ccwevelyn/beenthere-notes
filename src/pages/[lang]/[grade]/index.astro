@@ -29,20 +29,22 @@ const message = grade.message?.[lang];
       <p class="hero-copy">{grade.description[lang]}</p>
     )}
   </div>
-  <section class="container section">
-    <div class="section-head">
-      <h2>{t.chooseSemester}</h2>
-    </div>
-    <div class="two-grid">
-      {semesters.map((semester, index) => (
-        <a class="link-row" href={`/${lang}/${grade.id}/${semester.id}/`}>
-          <div>
-            <span class="code">0{index + 1}</span>
-            <h2>{semester.label[lang]}</h2>
-          </div>
-          <span aria-hidden="true">→</span>
-        </a>
-      ))}
-    </div>
-  </section>
+  {gradeId !== "year-1" && (
+    <section class="container section">
+      <div class="section-head">
+        <h2>{t.chooseSemester}</h2>
+      </div>
+      <div class="two-grid">
+        {semesters.map((semester, index) => (
+          <a class="link-row" href={`/${lang}/${grade.id}/${semester.id}/`}>
+            <div>
+              <span class="code">0{index + 1}</span>
+              <h2>{semester.label[lang]}</h2>
+            </div>
+            <span aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 </BaseLayout>
