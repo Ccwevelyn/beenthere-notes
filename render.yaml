@@ -17,7 +17,7 @@ services:
   - type: web
     name: beenthere-notes-api
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm ci --omit=dev
     startCommand: npm run start:api
     healthCheckPath: /health
@@ -37,6 +37,6 @@ services:
 
 databases:
   - name: beenthere-notes-db
-    plan: basic-256mb
+    plan: free
     databaseName: beenthere_notes
     user: beenthere_notes
