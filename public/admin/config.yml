@@ -1,8 +1,12 @@
-# Netlify 部署：使用 git-gateway + Netlify Identity（无需自建 OAuth API）。
+# 线上：用 GitHub 登录（Netlify Function 提供 /auth）。
+# base_url 在 Netlify 构建时由 scripts/write-admin-base-url.mjs 自动写入站点地址。
 # 本地开发：另开终端运行 npx decap-server，并保持 local_backend: true。
 backend:
-  name: git-gateway
+  name: github
+  repo: Ccwevelyn/beenthere-notes
   branch: main
+  base_url: http://localhost:4321
+  auth_endpoint: auth
 
 local_backend: true
 locale: zh_Hans

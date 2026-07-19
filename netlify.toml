@@ -1,9 +1,22 @@
 [build]
-  command = "npm run build"
+  command = "node scripts/write-admin-base-url.mjs && npm run build"
   publish = "dist"
+  functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "22"
+
+[[redirects]]
+  from = "/auth"
+  to = "/.netlify/functions/auth"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/auth/callback"
+  to = "/.netlify/functions/auth-callback"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/"

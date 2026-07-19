@@ -10,7 +10,7 @@
 - **双语站点**：中文 `/zh/` 与 English `/en/`，页面可一键切换语言。
 - **分层导航**：年级 → 学期 → 课程 → 文章，逐级筛选，快速定位资料。
 - **两类内容**：`note`（复习笔记）与 `tip`（考试提醒），支持 PDF / 图片等附件。
-- **在线投稿**：基于 Decap CMS 的 `/admin/` 编辑器，用 Netlify Identity 登录即可写文章。
+- **在线投稿**：基于 Decap CMS 的 `/admin/` 编辑器，用 GitHub 登录即可写文章。
 - **浏览量统计**（可选）：可另接 Node API + PostgreSQL；未配置时站点与后台仍可正常使用。
 - **静态部署**：推荐免费部署到 [Netlify](https://www.netlify.com/)（`netlify.toml`）。
 
@@ -19,7 +19,7 @@
 | 部分 | 技术 |
 | --- | --- |
 | 站点框架 | [Astro 5](https://astro.build/)（静态输出 + i18n） |
-| 内容管理 | Markdown 内容集合 + [Decap CMS](https://decapcms.org/) + Netlify Identity |
+| 内容管理 | Markdown 内容集合 + [Decap CMS](https://decapcms.org/)（GitHub 登录） |
 | 浏览量 API（可选） | 原生 Node `http` 服务（`services/views-api/server.mjs`） |
 | 部署 | [Netlify](https://www.netlify.com/)（网站 + 后台） |
 
@@ -80,7 +80,7 @@ npx decap-server
 
 ## 添加文章
 
-部署后进入 `/admin/`，用 Netlify Identity 登录并创建文章。文章会提交到
+部署后进入 `/admin/`，用 **GitHub** 登录并创建文章。文章会提交到
 `src/content/notes/<语言>/`，随后触发 Netlify 自动部署。
 
 每篇文章的 frontmatter 字段由 `src/content.config.ts` 定义：`title`、`description`、
@@ -104,13 +104,14 @@ npx decap-server
 
 1. 打开 [Netlify](https://app.netlify.com/) → **Add new site** → **Import an existing project**。
 2. 连接 GitHub 仓库 `Ccwevelyn/beenthere-notes`，构建配置会读取 `netlify.toml`。
-3. 环境变量（Site settings → Environment variables）设置：
-   - `SITE_URL` = 你的站点地址（首次可先部署，再改成 `https://xxx.netlify.app` 后重新部署）
-4. Deploy 完成后，到 **Site configuration → Identity**：
-   - 点 **Enable Identity**
-   - **Registration** 建议设为 **Invite only**
-   - **Services → Git Gateway** → **Enable Git Gateway**（连接 GitHub）
-5. **Identity → Invite users**：邀请你自己的邮箱，邮件里设密码。
-6. 打开 `https://你的站点.netlify.app/admin/`，用刚设的账号登录，即可写 Markdown、上传附件、增删改文章。
+3. 在 GitHub 创建 **OAuth App**（Settings → Developer settings → OAuth Apps → New）：
+   - Homepage URL：`https://你的站点.netlify.app`
+   - Authorization callback URL：`https://你的站点.netlify.app/auth/callback`
+4. 在 Netlify **Environment variables** 中设置：
+   - `SITE_URL` = `https://你的站点.netlify.app`
+   - `GITHUB_CLIENT_ID` = OAuth App 的 Client ID
+   - `GITHUB_CLIENT_SECRET` = OAuth App 的 Client Secret  
+   然后 **Trigger deploy → Clear cache and deploy site**。
+5. 打开 `https://你的站点.netlify.app/admin/`，点登录，用有该仓库写权限的 **GitHub 账号** 授权即可写 Markdown、上传附件、增删改文章。
 
-> 浏览量可以后再接；未配置 `PUBLIC_VIEWS_API_URL` 时，网站与 `/admin/` 后台都可正常使用。
+> 不需要 Netlify Identity / 邮箱注册。浏览量可稍后接入；未配置 `PUBLIC_VIEWS_API_URL` 时站点仍可用。
