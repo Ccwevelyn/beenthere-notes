@@ -18,14 +18,21 @@ const { Content, headings } = await render(entry);
 const t = copy[lang];
 const course = courses.find((item) => item.slug === entry.data.course);
 const articleSlug = entry.id;
-// After Yuque heading normalize, body outline starts at H2; include H2–H4 in TOC.
 const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 4);
 const pdfAttachments = entry.data.attachments.filter((item) => /\.pdf$/i.test(item.file));
+const docxAttachments = entry.data.attachments.filter((item) => /\.docx$/i.test(item.file));
+const otherAttachments = entry.data.attachments.filter(
+  (item) => !/\.pdf$/i.test(item.file) && !/\.docx$/i.test(item.file)
+);
+const primaryDocx = docxAttachments[0];
+const hasDocx = Boolean(primaryDocx);
+const docxFileName = primaryDocx?.file.split("/").pop() || "document.docx";
+const showToc = toc.length > 0 && !hasDocx;
 ---
 
 <BaseLayout lang={lang} title={entry.data.title} description={entry.data.description}>
   <div class="article-shell">
-    {toc.length > 0 && (
+    {showToc && (
       <aside class="article-toc" aria-label={lang === "zh" ? "目录" : "Contents"}>
         <p class="toc-title">{lang === "zh" ? "目录" : "Contents"}</p>
         <nav>
@@ -40,7 +47,7 @@ const pdfAttachments = entry.data.attachments.filter((item) => /\.pdf$/i.test(it
       </aside>
     )}
 
-    <article class:list={["article-wrap", { "has-toc": toc.length > 0 }]}>
+    <article class:list={["article-wrap", { "has-toc": showToc, "has-docx": hasDocx }]}>
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
         {course && (
@@ -64,6 +71,38 @@ const pdfAttachments = entry.data.attachments.filter((item) => /\.pdf$/i.test(it
           data-suffix={t.views}
         >— {t.views}</span>
       </div>
+
+      {hasDocx && primaryDocx && (
+        <section
+          class="word-shell"
+          data-docx-viewer
+          data-docx-url={primaryDocx.file}
+          data-error-text={lang === "zh"
+            ? "Word 预览加载失败，请下载原文件或展开下方文本版。"
+            : "Word preview failed. Download the file or expand the text version below."}
+          aria-label={lang === "zh" ? "Word 预览" : "Word preview"}
+        >
+          <div class="word-chrome">
+            <div class="word-chrome-left">
+              <span class="word-chrome-icon" aria-hidden="true">W</span>
+              <div class="word-chrome-meta">
+                <strong>{primaryDocx.label || docxFileName}</strong>
+                <span>{docxFileName}</span>
+              </div>
+            </div>
+            <a class="word-download" href={primaryDocx.file} download={docxFileName}>
+              {lang === "zh" ? "下载 Word" : "Download Word"}
+            </a>
+          </div>
+          <div class="word-stage">
+            <p class="word-status" data-docx-status>
+              {lang === "zh" ? "正在加载 Word 预览…" : "Loading Word preview…"}
+            </p>
+            <div class="word-canvas" data-docx-canvas></div>
+          </div>
+        </section>
+      )}
+
       {pdfAttachments.length > 0 && (
         <div class="article-pdf-bar">
           {pdfAttachments.map((attachment) => (
@@ -74,16 +113,25 @@ const pdfAttachments = entry.data.attachments.filter((item) => /\.pdf$/i.test(it
           ))}
         </div>
       )}
-      <div class="prose">
-        <Content />
-      </div>
-      {entry.data.attachments.some((item) => !/\.pdf$/i.test(item.file)) && (
+
+      {hasDocx ? (
+        <details class="docx-text-fallback" data-docx-text-fallback>
+          <summary>{lang === "zh" ? "文本版（可搜索）" : "Text version (searchable)"}</summary>
+          <div class="prose">
+            <Content />
+          </div>
+        </details>
+      ) : (
+        <div class="prose">
+          <Content />
+        </div>
+      )}
+
+      {otherAttachments.length > 0 && (
         <section class="attachments" id="attachments">
           <h2>{lang === "zh" ? "附件" : "Attachments"}</h2>
           <ul>
-            {entry.data.attachments
-              .filter((attachment) => !/\.pdf$/i.test(attachment.file))
-              .map((attachment) => {
+            {otherAttachments.map((attachment) => {
               const isImage = /\.(png|jpe?g|gif|webp|avif|svg)$/i.test(attachment.file);
               return (
                 <li>
