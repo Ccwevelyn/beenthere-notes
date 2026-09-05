@@ -80,8 +80,8 @@ const showToc = toc.length > 0 && !hasDocx;
           data-loading-text={lang === "zh" ? "正在加载 Word 预览…" : "Loading Word preview…"}
           data-rendering-text={lang === "zh" ? "正在渲染 Word…" : "Rendering Word…"}
           data-error-text={lang === "zh"
-            ? "Word 预览加载失败，请下载原文件或展开下方文本版。"
-            : "Word preview failed. Download the file or expand the text version below."}
+            ? "Word 预览加载失败，请点击右上角下载 Word 原文件。"
+            : "Word preview failed. Please download the Word file."}
           aria-label={lang === "zh" ? "Word 预览" : "Word preview"}
         >
           <div class="word-chrome">
@@ -116,14 +116,7 @@ const showToc = toc.length > 0 && !hasDocx;
         </div>
       )}
 
-      {hasDocx ? (
-        <details class="docx-text-fallback" data-docx-text-fallback>
-          <summary>{lang === "zh" ? "文本版（可搜索）" : "Text version (searchable)"}</summary>
-          <div class="prose">
-            <Content />
-          </div>
-        </details>
-      ) : (
+      {!hasDocx && (
         <div class="prose">
           <Content />
         </div>

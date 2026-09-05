@@ -273,26 +273,6 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
   box-shadow: 0 2px 10px rgba(15, 23, 42, .12);
   background: #fff;
 }
-.docx-text-fallback {
-  margin: 0 0 28px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
-}
-.docx-text-fallback > summary {
-  cursor: pointer;
-  list-style: none;
-  padding: 12px 16px;
-  font-weight: 600;
-  color: var(--green);
-}
-.docx-text-fallback > summary::-webkit-details-marker { display: none; }
-.docx-text-fallback[open] > summary {
-  border-bottom: 1px solid var(--line);
-}
-.docx-text-fallback .prose {
-  padding: 18px 16px 22px;
-}
 
 .prose {
   font-family: "Noto Sans SC", "DM Sans", sans-serif;

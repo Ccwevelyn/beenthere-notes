@@ -18,8 +18,6 @@ function showFailure(shell: DocxShell, status: HTMLElement | null, message: stri
     status.dataset.failed = "1";
     status.textContent = message;
   }
-  const textFallback = document.querySelector<HTMLDetailsElement>("[data-docx-text-fallback]");
-  if (textFallback) textFallback.open = true;
   shell.dataset.ready = "0";
 }
 
@@ -32,7 +30,7 @@ function mountOfficeFallback(shell: DocxShell, canvas: HTMLElement, status: HTML
     showFailure(
       shell,
       status,
-      shell.dataset.errorText || "Word 预览加载失败，请下载原文件或展开下方文本版。"
+      shell.dataset.errorText || "Word 预览加载失败，请点击右上角下载 Word 原文件。"
     );
     return;
   }
@@ -134,7 +132,7 @@ export function bindDocxViewer() {
           showFailure(
             shell,
             status,
-            shell.dataset.errorText || "Word 预览加载失败，请下载原文件或展开下方文本版。"
+            shell.dataset.errorText || "Word 预览加载失败，请点击右上角下载 Word 原文件。"
           );
         }
       }
