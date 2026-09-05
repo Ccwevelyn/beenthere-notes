@@ -43,7 +43,8 @@ collections:
         name: body
         widget: markdown
         required: false
-        hint: 可只写文字（Tip 常用）。也可粘贴语雀 Markdown；需要时再在下方上传 PDF。
+        modes: [raw]
+        hint: 用纯文本编辑 Markdown（更稳定，中文输入不会崩）。可直接粘贴语雀 Markdown；需要时再在下方上传 PDF。
       - label: PDF / 图片附件（可选，可不填）
         name: attachments
         widget: list
