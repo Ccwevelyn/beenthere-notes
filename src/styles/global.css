@@ -252,6 +252,17 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
 .word-canvas {
   margin: 0 auto;
   max-width: 816px;
+  min-height: 60%;
+}
+.word-office-frame {
+  display: block;
+  width: min(100%, 816px);
+  height: min(64vh, 780px);
+  margin: 0 auto;
+  border: 0;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, .12);
 }
 .word-canvas .docx-wrapper {
   background: transparent !important;

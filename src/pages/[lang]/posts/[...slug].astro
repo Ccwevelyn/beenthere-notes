@@ -77,6 +77,8 @@ const showToc = toc.length > 0 && !hasDocx;
           class="word-shell"
           data-docx-viewer
           data-docx-url={primaryDocx.file}
+          data-loading-text={lang === "zh" ? "正在加载 Word 预览…" : "Loading Word preview…"}
+          data-rendering-text={lang === "zh" ? "正在渲染 Word…" : "Rendering Word…"}
           data-error-text={lang === "zh"
             ? "Word 预览加载失败，请下载原文件或展开下方文本版。"
             : "Word preview failed. Download the file or expand the text version below."}
