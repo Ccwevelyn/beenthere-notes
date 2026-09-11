@@ -92,6 +92,10 @@ collections:
           - { label: "COMP3114 · 信息系统项目", value: information-system-project }
           - { label: "COMP3117 · 分析数据设计与应用", value: analytical-data-design-applications }
           - { label: "COMP3118 · 数据科学与商业分析", value: data-science-business-analytics }
+          - { label: "COMP4111 · 电脑安全", value: computer-security }
+          - { label: "COMP4116 · 数字图像与多媒体处理", value: digital-image-multimedia-processing }
+          - { label: "COMP4112 · 企业系统与应用开发", value: enterprise-system-application-development }
+          - { label: "COMP4299 · 毕业设计", value: final-year-project }
       - { label: 发布日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false }
       - label: 显示顺序
         name: order

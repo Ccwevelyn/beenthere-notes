@@ -81,11 +81,7 @@ export const grades: {
   {
     id: "year-4",
     label: { zh: "大四", en: "Year 4" },
-    description: { zh: "毕业设计与升学就业", en: "Capstone, further study, and careers" },
-    message: {
-      zh: "我将于2026年8月成为一名大四学生~ 这里的内容后续会慢慢补充起来！我们一起加油！",
-      en: "I will become a Year 4 student in August 2026~ Content here will be added gradually. Let's keep going together!"
-    }
+    description: { zh: "毕业设计与升学就业", en: "Capstone, further study, and careers" }
   }
 ];
 
@@ -246,6 +242,38 @@ export const courses = [
     code: "COMP3118",
     title: { zh: "数据科学与商业分析", en: "Data Science and Business Analytics" },
     description: { zh: "数据科学方法及其商业分析应用。", en: "Data science methods and their applications in business analytics." }
+  },
+  {
+    slug: "computer-security",
+    grade: "year-4" as const,
+    semester: "fall" as const,
+    code: "COMP4111",
+    title: { zh: "电脑安全", en: "Computer Security" },
+    description: { zh: "系统安全、威胁模型与防护方法。", en: "System security, threat models, and protection methods." }
+  },
+  {
+    slug: "digital-image-multimedia-processing",
+    grade: "year-4" as const,
+    semester: "fall" as const,
+    code: "COMP4116",
+    title: { zh: "数字图像与多媒体处理", en: "Digital Image and Multimedia Processing" },
+    description: { zh: "图像与多媒体处理的基本理论与应用。", en: "Fundamentals and applications of image and multimedia processing." }
+  },
+  {
+    slug: "enterprise-system-application-development",
+    grade: "year-4" as const,
+    semester: "fall" as const,
+    code: "COMP4112",
+    title: { zh: "企业系统与应用开发", en: "Enterprise System and Application Development" },
+    description: { zh: "企业系统架构与应用开发实践。", en: "Enterprise system architecture and application development practice." }
+  },
+  {
+    slug: "final-year-project",
+    grade: "year-4" as const,
+    semester: "fall" as const,
+    code: "COMP4299",
+    title: { zh: "毕业设计", en: "Final Year Project" },
+    description: { zh: "独立完成毕业专题的研究与实现。", en: "Independent research and implementation for the final-year project." }
   }
 ];
 
