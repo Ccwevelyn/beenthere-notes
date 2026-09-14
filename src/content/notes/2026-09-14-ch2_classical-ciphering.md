@@ -1,6 +1,6 @@
 ---
 title: Ch2_Classical Ciphering
-description: Playfair cipher 在课上也花了很多时间讲解和联系，内容很重要！需要多多留意~
+description: Playfair cipher 在课上也花了很多时间讲解和练习，内容很重要！需要多多留意~
 type: note
 attachments:
   - label: PDF
