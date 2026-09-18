@@ -99,21 +99,3 @@ npx decap-server
 | --- | --- |
 | `SITE_URL` | 站点公开地址（用于构建生成绝对链接） |
 | `PUBLIC_VIEWS_API_URL` | 可选；浏览量 API 地址，留空则不统计真实点击量 |
-
-## Netlify 部署（推荐，免费）
-
-1. 打开 [Netlify](https://app.netlify.com/) → **Add new site** → **Import an existing project**。
-2. 连接 GitHub 仓库 `Ccwevelyn/beenthere-notes`，构建配置会读取 `netlify.toml`。
-3. 在 GitHub 创建 **OAuth App**（Settings → Developer settings → OAuth Apps → New）：
-   - Homepage URL：`https://你的站点.netlify.app`
-   - Authorization callback URL（只填这一条）：`https://你的站点.netlify.app/auth/callback`
-4. 在 Netlify **Environment variables** 中设置：
-   - `SITE_URL` = `https://你的站点.netlify.app`
-   - `GITHUB_CLIENT_ID` = OAuth App 的 Client ID
-   - `GITHUB_CLIENT_SECRET` = OAuth App 的 Client Secret
-   - `CONSOLE_GITHUB_USERS` = `Ccwevelyn`（可逗号分隔多个；只有这些人能打开 `/zh/console/`）
-   然后 **Trigger deploy → Clear cache and deploy site**。
-5. 打开 `https://你的站点.netlify.app/admin/`，点登录，用有该仓库写权限的 **GitHub 账号** 授权即可写 Markdown、上传附件、增删改文章。
-6. 浏览量面板：`https://你的站点.netlify.app/zh/console/`，与后台共用同一个 OAuth callback；需用 `CONSOLE_GITHUB_USERS` 里的账号登录。
-
-> 不需要 Netlify Identity / 邮箱注册。浏览量可稍后接入；未配置 `PUBLIC_VIEWS_API_URL` 时站点仍可用。
