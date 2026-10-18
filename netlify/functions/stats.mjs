@@ -23,7 +23,7 @@ export default async (req) => {
     return json(401, { error: "Unauthorized" });
   }
 
-  const store = getStore("article-views");
+  const store = getStore({ name: "article-views", consistency: "strong" });
   const listed = await store.list();
   const views = {};
 

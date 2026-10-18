@@ -22,7 +22,7 @@ export default async (req, context) => {
     return json(400, { error: "Invalid article slug" });
   }
 
-  const store = getStore("article-views");
+  const store = getStore({ name: "article-views", consistency: "strong" });
 
   if (req.method === "GET") {
     const views = Number((await store.get(slug)) || 0);
@@ -30,8 +30,21 @@ export default async (req, context) => {
   }
 
   if (req.method === "POST") {
+    let delta = 1;
+    const contentType = req.headers.get("content-type") || "";
+    if (contentType.includes("application/json")) {
+      try {
+        const body = await req.json();
+        const requested = Number(body?.delta);
+        if (Number.isFinite(requested)) {
+          delta = Math.max(1, Math.min(80, Math.floor(requested)));
+        }
+      } catch {
+        delta = 1;
+      }
+    }
     const current = Number((await store.get(slug)) || 0);
-    const views = current + 1;
+    const views = current + delta;
     await store.set(slug, String(views));
     return json(200, { slug, views });
   }
