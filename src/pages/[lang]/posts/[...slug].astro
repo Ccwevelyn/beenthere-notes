@@ -25,9 +25,12 @@ const otherAttachments = entry.data.attachments.filter(
   (item) => !/\.pdf$/i.test(item.file) && !/\.docx$/i.test(item.file)
 );
 const primaryDocx = docxAttachments[0];
+const primaryPdf = pdfAttachments[0];
 const hasDocx = Boolean(primaryDocx);
+const hasPdf = !hasDocx && Boolean(primaryPdf);
 const docxFileName = primaryDocx?.file.split("/").pop() || "document.docx";
-const showToc = toc.length > 0 && !hasDocx;
+const pdfFileName = primaryPdf?.file.split("/").pop() || "document.pdf";
+const showToc = toc.length > 0 && !hasDocx && !hasPdf;
 ---
 
 <BaseLayout lang={lang} title={entry.data.title} description={entry.data.description}>
@@ -47,7 +50,7 @@ const showToc = toc.length > 0 && !hasDocx;
       </aside>
     )}
 
-    <article class:list={["article-wrap", { "has-toc": showToc, "has-docx": hasDocx }]}>
+    <article class:list={["article-wrap", { "has-toc": showToc, "has-docx": hasDocx || hasPdf }]}>
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
         {course && (
@@ -105,7 +108,31 @@ const showToc = toc.length > 0 && !hasDocx;
         </section>
       )}
 
-      {pdfAttachments.length > 0 && (
+      {hasPdf && primaryPdf && (
+        <section class="word-shell" aria-label={lang === "zh" ? "PDF 预览" : "PDF preview"}>
+          <div class="word-chrome">
+            <div class="word-chrome-left">
+              <span class="word-chrome-icon is-pdf" aria-hidden="true">PDF</span>
+              <div class="word-chrome-meta">
+                <strong>{primaryPdf.label || pdfFileName}</strong>
+                <span>{pdfFileName}</span>
+              </div>
+            </div>
+            <a class="word-download" href={primaryPdf.file} download={pdfFileName}>
+              {lang === "zh" ? "下载 PDF" : "Download PDF"}
+            </a>
+          </div>
+          <div class="word-stage word-stage-pdf">
+            <iframe
+              class="pdf-embed-frame"
+              title={primaryPdf.label || pdfFileName}
+              src={`${primaryPdf.file}#view=FitH`}
+            ></iframe>
+          </div>
+        </section>
+      )}
+
+      {pdfAttachments.length > 0 && !hasPdf && (
         <div class="article-pdf-bar">
           {pdfAttachments.map((attachment) => (
             <a class="article-pdf-link" href={attachment.file} target="_blank" rel="noopener">
@@ -116,7 +143,7 @@ const showToc = toc.length > 0 && !hasDocx;
         </div>
       )}
 
-      {!hasDocx && (
+      {!hasDocx && !hasPdf && (
         <div class="prose">
           <Content />
         </div>

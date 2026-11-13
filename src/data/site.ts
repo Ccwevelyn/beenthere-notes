@@ -92,20 +92,20 @@ export const semesters = [
 
 export const courses = [
   {
-    slug: "calculus",
+    slug: "java",
     grade: "year-1" as const,
     semester: "fall" as const,
-    code: "MATH 101",
-    title: { zh: "微积分", en: "Calculus" },
-    description: { zh: "概念梳理、题型总结与考试提醒。", en: "Concepts, problem patterns, and exam reminders." }
+    code: "Java",
+    title: { zh: "Java", en: "Java" },
+    description: { zh: "课堂随笔与容易卡住的基础概念。", en: "Class notes and the basics that are easy to get stuck on." }
   },
   {
-    slug: "programming",
+    slug: "computer-organization",
     grade: "year-1" as const,
-    semester: "fall" as const,
-    code: "CS 101",
-    title: { zh: "程序设计基础", en: "Programming Fundamentals" },
-    description: { zh: "从语法基础到调试与考试策略。", en: "From syntax basics to debugging and exam strategy." }
+    semester: "spring" as const,
+    code: "计组",
+    title: { zh: "计算机组成原理", en: "Computer Organization" },
+    description: { zh: "总线等课堂随笔，按需翻看。", en: "Class notes such as the system bus, for reference." }
   },
   {
     slug: "database-design",

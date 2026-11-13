@@ -73,8 +73,8 @@ collections:
         name: course
         widget: select
         options:
-          - { label: 微积分, value: calculus }
-          - { label: 程序设计基础, value: programming }
+          - { label: "Java · 大一上", value: java }
+          - { label: "计算机组成原理 · 大一下", value: computer-organization }
           - { label: "COMP2111 · 数据库设计", value: database-design }
           - { label: "COMP2112 · 数据结构与算法", value: data-structures-algorithms }
           - { label: "COMP2113 · 操作系统", value: operating-systems }
