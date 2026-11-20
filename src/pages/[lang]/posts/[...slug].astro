@@ -27,10 +27,10 @@ const otherAttachments = entry.data.attachments.filter(
 const primaryDocx = docxAttachments[0];
 const primaryPdf = pdfAttachments[0];
 const hasDocx = Boolean(primaryDocx);
-const hasPdf = !hasDocx && Boolean(primaryPdf);
+const embedPdf = entry.data.course === "java" && !hasDocx && Boolean(primaryPdf);
 const docxFileName = primaryDocx?.file.split("/").pop() || "document.docx";
 const pdfFileName = primaryPdf?.file.split("/").pop() || "document.pdf";
-const showToc = toc.length > 0 && !hasDocx && !hasPdf;
+const showToc = toc.length > 0 && !hasDocx && !embedPdf;
 ---
 
 <BaseLayout lang={lang} title={entry.data.title} description={entry.data.description}>
@@ -50,7 +50,7 @@ const showToc = toc.length > 0 && !hasDocx && !hasPdf;
       </aside>
     )}
 
-    <article class:list={["article-wrap", { "has-toc": showToc, "has-docx": hasDocx || hasPdf }]}>
+    <article class:list={["article-wrap", { "has-toc": showToc, "has-docx": hasDocx || embedPdf }]}>
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
         {course && (
@@ -108,7 +108,7 @@ const showToc = toc.length > 0 && !hasDocx && !hasPdf;
         </section>
       )}
 
-      {hasPdf && primaryPdf && (
+      {embedPdf && primaryPdf && (
         <section class="word-shell" aria-label={lang === "zh" ? "PDF 预览" : "PDF preview"}>
           <div class="word-chrome">
             <div class="word-chrome-left">
@@ -132,7 +132,7 @@ const showToc = toc.length > 0 && !hasDocx && !hasPdf;
         </section>
       )}
 
-      {pdfAttachments.length > 0 && !hasPdf && (
+      {pdfAttachments.length > 0 && !embedPdf && (
         <div class="article-pdf-bar">
           {pdfAttachments.map((attachment) => (
             <a class="article-pdf-link" href={attachment.file} target="_blank" rel="noopener">
@@ -143,7 +143,7 @@ const showToc = toc.length > 0 && !hasDocx && !hasPdf;
         </div>
       )}
 
-      {!hasDocx && !hasPdf && (
+      {!hasDocx && !embedPdf && (
         <div class="prose">
           <Content />
         </div>
