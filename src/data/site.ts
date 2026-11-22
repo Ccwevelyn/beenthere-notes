@@ -5,6 +5,15 @@ export type SemesterId = "fall" | "spring";
 export const languages: Lang[] = ["zh", "en"];
 
 /** Smaller order first; same order → newer date first. */
+export function localizedNoteCopy<
+  T extends { data: { title: string; description: string; titleEn?: string; descriptionEn?: string } }
+>(entry: T, lang: Lang) {
+  return {
+    title: lang === "en" && entry.data.titleEn ? entry.data.titleEn : entry.data.title,
+    description: lang === "en" && entry.data.descriptionEn ? entry.data.descriptionEn : entry.data.description
+  };
+}
+
 export function sortNotesByDisplayOrder<
   T extends { data: { order?: number; date: Date } }
 >(a: T, b: T) {
@@ -26,6 +35,7 @@ export const copy = {
     courses: "课程",
     notes: "笔记",
     tips: "Tips",
+    recommendations: "一些建议",
     noContent: "内容正在整理中",
     backHome: "返回首页",
     allMaterials: "本课程资料",
@@ -44,6 +54,7 @@ export const copy = {
     courses: "Courses",
     notes: "Notes",
     tips: "Tips",
+    recommendations: "Some recommendations",
     noContent: "More materials are on the way",
     backHome: "Back home",
     allMaterials: "Course materials",
@@ -81,7 +92,7 @@ export const grades: {
   {
     id: "application",
     label: { zh: "申请", en: "Application" },
-    description: { zh: "申请相关的经验、Tips 和整理。", en: "Application tips, notes, and checklists." }
+    description: { zh: "申请路上的一些建议。", en: "Some recommendations for applying." }
   },
   {
     id: "year-4",
@@ -102,7 +113,7 @@ export const courses = [
     semester: "fall" as const,
     code: "Application",
     title: { zh: "申请", en: "Application" },
-    description: { zh: "申请相关的经验、Tips 和整理。", en: "Application tips, notes, and checklists." }
+    description: { zh: "申请路上的一些建议。", en: "Some recommendations for applying." }
   },
   {
     slug: "java",

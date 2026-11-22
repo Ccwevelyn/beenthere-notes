@@ -5,7 +5,9 @@ const notes = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/notes" }),
   schema: z.object({
     title: z.string(),
+    titleEn: z.string().optional(),
     description: z.string().default(""),
+    descriptionEn: z.string().optional(),
     type: z.enum(["note", "tip"]).default("note"),
     grade: z.enum(["year-1", "year-2", "year-3", "year-4", "application"]),
     semester: z.enum(["fall", "spring"]),

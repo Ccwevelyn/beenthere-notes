@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { copy, courses, grades, languages, semesters, sortNotesByDisplayOrder, type GradeId, type Lang } from "../../../data/site";
+import { copy, courses, grades, languages, localizedNoteCopy, semesters, sortNotesByDisplayOrder, type GradeId, type Lang } from "../../../data/site";
 
 export function getStaticPaths() {
   return languages.flatMap((lang) =>
@@ -22,8 +22,6 @@ const applicationEntries = gradeId === "application"
       .filter((entry) => entry.data.published && entry.data.course === "application")
       .sort(sortNotesByDisplayOrder)
   : [];
-const applicationNotes = applicationEntries.filter((entry) => entry.data.type === "note");
-const applicationTips = applicationEntries.filter((entry) => entry.data.type === "tip");
 const postPath = (entryId: string) => `/${lang}/posts/${entryId}/`;
 ---
 
@@ -49,25 +47,17 @@ const postPath = (entryId: string) => `/${lang}/posts/${entryId}/`;
   </div>
   {gradeId === "application" && (
     <section class="container section">
-      <div class="content-columns">
-        <div class="content-list">
-          <h2>{t.notes} <span class="meta">({applicationNotes.length})</span></h2>
-          {applicationNotes.length ? applicationNotes.map((entry) => (
+      <div class="content-list">
+        <h2>{t.recommendations} <span class="meta">({applicationEntries.length})</span></h2>
+        {applicationEntries.length ? applicationEntries.map((entry) => {
+          const item = localizedNoteCopy(entry, lang);
+          return (
             <a class="article-link" href={postPath(entry.id)}>
-              <h3>{entry.data.title}</h3>
-              <p class="meta">{entry.data.description}</p>
+              <h3>{item.title}</h3>
+              {item.description.trim() && <p class="meta">{item.description}</p>}
             </a>
-          )) : <p class="status">{t.noContent}</p>}
-        </div>
-        <div class="content-list">
-          <h2>{t.tips} <span class="meta">({applicationTips.length})</span></h2>
-          {applicationTips.length ? applicationTips.map((entry) => (
-            <a class="article-link" href={postPath(entry.id)}>
-              <h3>{entry.data.title}</h3>
-              <p class="meta">{entry.data.description}</p>
-            </a>
-          )) : <p class="status">{t.noContent}</p>}
-        </div>
+          );
+        }) : <p class="status">{t.noContent}</p>}
       </div>
     </section>
   )}

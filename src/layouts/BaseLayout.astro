@@ -63,6 +63,7 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
     </footer>
     <script>
       import { bindDocxViewer } from "../scripts/docx-viewer";
+      import { bindXlsxViewer } from "../scripts/xlsx-viewer";
 
       let tocObserver: IntersectionObserver | null = null;
 
@@ -216,6 +217,7 @@ const viewsApi = import.meta.env.PUBLIC_VIEWS_API_URL || "";
         bindViews();
         bindConsole();
         bindDocxViewer();
+        bindXlsxViewer();
       };
 
       const swapTo = async (url: string, { push = true } = {}) => {

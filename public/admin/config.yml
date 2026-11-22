@@ -26,6 +26,7 @@ collections:
     summary: "{{title}} · {{course}}"
     fields:
       - { label: 标题, name: title, widget: string }
+      - { label: 英文标题, name: titleEn, widget: string, required: false }
       - label: 类型
         name: type
         widget: select
@@ -38,7 +39,12 @@ collections:
         name: description
         widget: text
         required: false
-        hint: 显示在文章标题下方，列表页也会用到；可不填。
+        hint: 显示在文章标题下方，列表页也会用到；可不填。申请页列表请尽量写短。
+      - label: 英文摘要
+        name: descriptionEn
+        widget: text
+        required: false
+        hint: 点英文时用这一条；可不填。
       - label: 正文
         name: body
         widget: markdown

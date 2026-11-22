@@ -1,6 +1,8 @@
 ---
 title: 你一定要有的时间管理表
-description: 先下载空白表自己填；页上的港大 / UCL 只是范例，看表格长什么样。
+titleEn: A timeline you actually need
+description: 我在申请中总结的、用到的时间管理表，非常、推荐使用！
+descriptionEn: A timeline I used and summarised while applying — highly recommended.
 type: note
 attachments:
   - label: 空白时间管理表（Excel）
@@ -13,9 +15,9 @@ order: 1
 published: true
 ---
 
-申请一多，最容易乱的不是文书，是**哪天交、交了没、推荐信到了没、钱交了没**。用一张表把这些钉住，比记在聊天记录里靠谱得多。
+<div class="i18n-zh">
 
-<a class="article-pdf-link" href="/uploads/application-timeline.xlsx" download="application-timeline.xlsx">下载空白时间管理表（Excel）</a>
+申请一多，最容易乱的不是文书，是**哪天交、交了没、推荐信到了没、钱交了没**。用一张表把这些钉住，比记在聊天记录里靠谱得多。
 
 Excel 里有两个工作表：
 
@@ -24,10 +26,10 @@ Excel 里有两个工作表：
 
 ## 范例长这样
 
-| No. | 学校 | Program | Submitted | Reference | Interview | Status | Deadline | Note | Fee | RMB |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 香港大学 | Master of Science in Computer Science | 10.19 | N/A |  |  |  |  | 780 HKD | 663 |
-| 2 | 伦敦大学学院 (UCL) | Systems Engineering for the Internet of Things MSc | 11.21 |  |  |  |  |  | 90 Pound | 817 |
+| No. | Link | 学校 | Program | Submitted | Reference | Interview | Status | Deadline | Note | Fee | RMB |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | XX | 香港大学 | Master of Science in Computer Science | 10.19 | N/A |  |  |  |  | 780 HKD | 663 |
+| 2 | XX | 伦敦大学学院 (UCL) | Systems Engineering for the Internet of Things MSc | 11.21 |  |  |  |  |  | 90 Pound | 817 |
 
 列的用法可以按这个理解：
 
@@ -41,3 +43,36 @@ Excel 里有两个工作表：
 - **Fee / RMB**：申请费原文币种，以及换算成人民币，方便算总开销
 
 范例里的日期和金额只是**填写格式示意**。下载空白表后，把其他学校一行行加进去即可。
+
+</div>
+
+<div class="i18n-en">
+
+Once you apply to more than a couple of programmes, the mess is rarely the statement. It is **what is due, what is submitted, whether references arrived, and whether you paid**. A spreadsheet holds that better than chat history.
+
+The workbook has two sheets:
+
+- **Blank table**: headers and empty rows. Fill in your own schools.
+- **Example**: only **HKU** and **UCL**, so you can see how each column is meant to look.
+
+## What the example looks like
+
+| No. | Link | School | Program | Submitted | Reference | Interview | Status | Deadline | Note | Fee | RMB |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | XX | The University of Hong Kong | Master of Science in Computer Science | 10.19 | N/A |  |  |  |  | 780 HKD | 663 |
+| 2 | XX | University College London (UCL) | Systems Engineering for the Internet of Things MSc | 11.21 |  |  |  |  |  | 90 Pound | 817 |
+
+How to read the columns:
+
+- **Link**: the application portal, so you can check status without hunting for it
+- **School / Program**: full names, not nicknames only you understand
+- **Submitted**: the day you submitted
+- **Reference**: whether recommenders have submitted, and when
+- **Interview / Status**: interviews and decisions
+- **Deadline**: the programme deadline
+- **Note**: language requirements and other remarks
+- **Fee / RMB**: the fee in the original currency, plus a RMB conversion for total cost
+
+Dates and amounts in the example are **format only**. After you download the blank sheet, add your other schools row by row.
+
+</div>
