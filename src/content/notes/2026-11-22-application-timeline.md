@@ -22,14 +22,15 @@ published: true
 Excel 里有两个工作表：
 
 - **空白表格**：只有表头和空行，直接拿去填自己的学校。
-- **范例**：只留了 **香港大学** 和 **UCL** 两行，方便对照每一列怎么写。
+- **范例**：留了 **香港大学**、**UCL** 和 **帝国理工** 三行，方便对照每一列怎么写。
 
 ## 范例长这样
 
 | No. | Link | 学校 | Program | Submitted | Reference | Interview | Status | Deadline | Note | Fee | RMB |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | XX | 香港大学 | Master of Science in Computer Science | 10.19 | N/A |  |  |  |  | 780 HKD | 663 |
+| 1 | XX | 香港大学 | Master of Science in Computer Science | 10.19 | N/A |  |  | 12.1 | 雅思 6(5.5) | 780 HKD | 663 |
 | 2 | XX | 伦敦大学学院 (UCL) | Systems Engineering for the Internet of Things MSc | 11.21 |  |  |  |  |  | 90 Pound | 817 |
+| 3 | XX | 帝国理工学院 | Computing MSc |  |  |  |  | 1.6 | 雅思 7(6.5) | 90 Pound | 817 |
 
 列的用法可以按这个理解：
 
@@ -53,14 +54,15 @@ Once you apply to more than a couple of programmes, the mess is rarely the state
 The workbook has two sheets:
 
 - **Blank table**: headers and empty rows. Fill in your own schools.
-- **Example**: only **HKU** and **UCL**, so you can see how each column is meant to look.
+- **Example**: **HKU**, **UCL**, and **Imperial**, so you can see how each column is meant to look.
 
 ## What the example looks like
 
 | No. | Link | School | Program | Submitted | Reference | Interview | Status | Deadline | Note | Fee | RMB |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | XX | The University of Hong Kong | Master of Science in Computer Science | 10.19 | N/A |  |  |  |  | 780 HKD | 663 |
+| 1 | XX | The University of Hong Kong | Master of Science in Computer Science | 10.19 | N/A |  |  | 12.1 | IELTS 6(5.5) | 780 HKD | 663 |
 | 2 | XX | University College London (UCL) | Systems Engineering for the Internet of Things MSc | 11.21 |  |  |  |  |  | 90 Pound | 817 |
+| 3 | XX | Imperial College London | Computing MSc |  |  |  |  | 1.6 | IELTS 7(6.5) | 90 Pound | 817 |
 
 How to read the columns:
 
