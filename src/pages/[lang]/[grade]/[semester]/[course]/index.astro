@@ -15,14 +15,16 @@ import {
 
 export function getStaticPaths() {
   return languages.flatMap((lang) =>
-    courses.map((course) => ({
-      params: {
-        lang,
-        grade: course.grade,
-        semester: course.semester,
-        course: course.slug
-      }
-    }))
+    courses
+      .filter((course) => course.grade !== "application")
+      .map((course) => ({
+        params: {
+          lang,
+          grade: course.grade,
+          semester: course.semester,
+          course: course.slug
+        }
+      }))
   );
 }
 

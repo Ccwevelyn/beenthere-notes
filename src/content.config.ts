@@ -7,7 +7,7 @@ const notes = defineCollection({
     title: z.string(),
     description: z.string().default(""),
     type: z.enum(["note", "tip"]).default("note"),
-    grade: z.enum(["year-1", "year-2", "year-3", "year-4"]),
+    grade: z.enum(["year-1", "year-2", "year-3", "year-4", "application"]),
     semester: z.enum(["fall", "spring"]),
     course: z.string(),
     date: z.coerce.date().default(() => new Date()),

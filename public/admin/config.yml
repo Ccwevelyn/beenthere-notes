@@ -62,6 +62,7 @@ collections:
           - { label: 大一, value: year-1 }
           - { label: 大二, value: year-2 }
           - { label: 大三, value: year-3 }
+          - { label: 申请, value: application }
           - { label: 大四, value: year-4 }
       - label: 学期
         name: semester
@@ -73,6 +74,7 @@ collections:
         name: course
         widget: select
         options:
+          - { label: 申请, value: application }
           - { label: "Java · 大一上", value: java }
           - { label: "计算机组成原理 · 大一下", value: computer-organization }
           - { label: "COMP2111 · 数据库设计", value: database-design }

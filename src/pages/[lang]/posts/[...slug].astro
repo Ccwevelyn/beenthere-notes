@@ -55,7 +55,11 @@ const showToc = toc.length > 0 && !hasDocx && !embedPdf;
         <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
         {course && (
           <span>
-            <a href={`/${lang}/${entry.data.grade}/${entry.data.semester}/${course.slug}/`}>
+            <a href={
+              entry.data.grade === "application"
+                ? `/${lang}/application/`
+                : `/${lang}/${entry.data.grade}/${entry.data.semester}/${course.slug}/`
+            }>
               {course.title[lang]}
             </a>
           </span>

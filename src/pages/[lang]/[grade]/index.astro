@@ -1,6 +1,7 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { copy, courses, grades, languages, semesters, type GradeId, type Lang } from "../../../data/site";
+import { copy, courses, grades, languages, semesters, sortNotesByDisplayOrder, type GradeId, type Lang } from "../../../data/site";
 
 export function getStaticPaths() {
   return languages.flatMap((lang) =>
@@ -16,6 +17,14 @@ const message = grade.message?.[lang];
 const year1Courses = courses
   .filter((item) => item.grade === "year-1")
   .sort((a, b) => Number(a.semester === "spring") - Number(b.semester === "spring"));
+const applicationEntries = gradeId === "application"
+  ? (await getCollection("notes"))
+      .filter((entry) => entry.data.published && entry.data.course === "application")
+      .sort(sortNotesByDisplayOrder)
+  : [];
+const applicationNotes = applicationEntries.filter((entry) => entry.data.type === "note");
+const applicationTips = applicationEntries.filter((entry) => entry.data.type === "tip");
+const postPath = (entryId: string) => `/${lang}/posts/${entryId}/`;
 ---
 
 <BaseLayout lang={lang} title={grade.label[lang]}>
@@ -24,7 +33,13 @@ const year1Courses = courses
       <span><a href={`/${lang}/`}>{lang === "zh" ? "首页" : "Home"}</a></span>
       <span>{grade.label[lang]}</span>
     </nav>
-    <p class="eyebrow">{message ? (lang === "zh" ? "一些肺腑之言" : "A few honest words") : t.chooseSemester}</p>
+    <p class="eyebrow">{
+      message
+        ? (lang === "zh" ? "一些肺腑之言" : "A few honest words")
+        : gradeId === "application"
+          ? (lang === "zh" ? "申请" : "Application")
+          : t.chooseSemester
+    }</p>
     <h1>{grade.label[lang]}</h1>
     {message ? (
       <p class="grade-message" set:html={message} />
@@ -32,6 +47,30 @@ const year1Courses = courses
       <p class="hero-copy">{grade.description[lang]}</p>
     )}
   </div>
+  {gradeId === "application" && (
+    <section class="container section">
+      <div class="content-columns">
+        <div class="content-list">
+          <h2>{t.notes} <span class="meta">({applicationNotes.length})</span></h2>
+          {applicationNotes.length ? applicationNotes.map((entry) => (
+            <a class="article-link" href={postPath(entry.id)}>
+              <h3>{entry.data.title}</h3>
+              <p class="meta">{entry.data.description}</p>
+            </a>
+          )) : <p class="status">{t.noContent}</p>}
+        </div>
+        <div class="content-list">
+          <h2>{t.tips} <span class="meta">({applicationTips.length})</span></h2>
+          {applicationTips.length ? applicationTips.map((entry) => (
+            <a class="article-link" href={postPath(entry.id)}>
+              <h3>{entry.data.title}</h3>
+              <p class="meta">{entry.data.description}</p>
+            </a>
+          )) : <p class="status">{t.noContent}</p>}
+        </div>
+      </div>
+    </section>
+  )}
   {gradeId === "year-1" && (
     <section class="container section">
       <div class="two-grid">
@@ -51,7 +90,7 @@ const year1Courses = courses
       </div>
     </section>
   )}
-  {gradeId !== "year-1" && (
+  {gradeId !== "year-1" && gradeId !== "application" && (
     <section class="container section">
       <div class="section-head">
         <h2>{t.chooseSemester}</h2>

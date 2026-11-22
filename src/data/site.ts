@@ -1,5 +1,5 @@
 export type Lang = "zh" | "en";
-export type GradeId = "year-1" | "year-2" | "year-3" | "year-4";
+export type GradeId = "year-1" | "year-2" | "year-3" | "year-4" | "application";
 export type SemesterId = "fall" | "spring";
 
 export const languages: Lang[] = ["zh", "en"];
@@ -79,6 +79,11 @@ export const grades: {
     description: { zh: "进阶课程与升学准备", en: "Advanced topics and postgraduate preparation" }
   },
   {
+    id: "application",
+    label: { zh: "申请", en: "Application" },
+    description: { zh: "申请相关的经验、Tips 和整理。", en: "Application tips, notes, and checklists." }
+  },
+  {
     id: "year-4",
     label: { zh: "大四", en: "Year 4" },
     description: { zh: "毕业设计与升学就业", en: "Capstone, further study, and careers" }
@@ -91,6 +96,14 @@ export const semesters = [
 ];
 
 export const courses = [
+  {
+    slug: "application",
+    grade: "application" as const,
+    semester: "fall" as const,
+    code: "Application",
+    title: { zh: "申请", en: "Application" },
+    description: { zh: "申请相关的经验、Tips 和整理。", en: "Application tips, notes, and checklists." }
+  },
   {
     slug: "java",
     grade: "year-1" as const,

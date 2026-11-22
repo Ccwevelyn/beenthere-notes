@@ -13,11 +13,13 @@ import {
 
 export function getStaticPaths() {
   return languages.flatMap((lang) =>
-    grades.flatMap((grade) =>
-      semesters.map((semester) => ({
-        params: { lang, grade: grade.id, semester: semester.id }
-      }))
-    )
+    grades
+      .filter((grade) => grade.id !== "application")
+      .flatMap((grade) =>
+        semesters.map((semester) => ({
+          params: { lang, grade: grade.id, semester: semester.id }
+        }))
+      )
   );
 }
 
