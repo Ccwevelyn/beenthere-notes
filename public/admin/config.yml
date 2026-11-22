@@ -68,8 +68,8 @@ collections:
           - { label: 大一, value: year-1 }
           - { label: 大二, value: year-2 }
           - { label: 大三, value: year-3 }
-          - { label: 申请, value: application }
           - { label: 大四, value: year-4 }
+          - { label: 申请, value: application }
       - label: 学期
         name: semester
         widget: select

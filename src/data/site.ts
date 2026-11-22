@@ -90,14 +90,14 @@ export const grades: {
     description: { zh: "进阶课程与升学准备", en: "Advanced topics and postgraduate preparation" }
   },
   {
-    id: "application",
-    label: { zh: "申请", en: "Application" },
-    description: { zh: "申请路上的一些建议。", en: "Some recommendations for applying." }
-  },
-  {
     id: "year-4",
     label: { zh: "大四", en: "Year 4" },
     description: { zh: "毕业设计与升学就业", en: "Capstone, further study, and careers" }
+  },
+  {
+    id: "application",
+    label: { zh: "申请", en: "Application" },
+    description: { zh: "申请路上的一些建议。", en: "Some recommendations for applying." }
   }
 ];
 
