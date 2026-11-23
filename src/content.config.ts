@@ -16,6 +16,7 @@ const notes = defineCollection({
     /** Smaller number appears first in course lists. */
     order: z.coerce.number().int().default(100),
     published: z.boolean().default(true),
+    inlineXlsx: z.boolean().optional(),
     attachments: z
       .array(
         z.object({

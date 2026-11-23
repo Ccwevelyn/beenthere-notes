@@ -341,12 +341,14 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
   border-collapse: collapse;
   width: max-content;
   min-width: 100%;
-  font-size: .82rem;
+  font-family: "Times New Roman", Times, "Noto Serif SC", serif;
+  font-size: 11pt;
   background: #fff;
+  border: 1px solid #1f2925;
 }
 .excel-canvas td,
 .excel-canvas th {
-  border: 1px solid #d4d7d2;
+  border: 1px solid #1f2925;
   padding: 7px 10px;
   white-space: nowrap;
   vertical-align: top;
@@ -388,6 +390,9 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
   min-width: 100%;
   margin: 0;
   table-layout: auto;
+  border-collapse: collapse;
+  border: 1px solid #1f2925;
+  font-family: "Times New Roman", Times, "Noto Serif SC", serif;
 }
 .prose .table-scroll th,
 .prose .table-scroll td {
@@ -395,6 +400,7 @@ h1 { max-width: 760px; margin-bottom: 18px; font-size: clamp(2.7rem, 7vw, 5.5rem
   line-height: 1.25;
   overflow-wrap: normal;
   word-break: keep-all;
+  border: 1px solid #1f2925;
 }
 .prose .word-shell {
   margin: 18px 0 28px;
@@ -710,13 +716,17 @@ html[lang="en"] .i18n-zh {
 .prose table {
   width: 100%;
   margin: 0 0 1.3em;
+  font-family: "Times New Roman", Times, "Noto Serif SC", serif;
   font-size: .95rem;
   line-height: 1.5;
+  border-collapse: collapse;
+  border: 1px solid #1f2925;
 }
 .prose th,
 .prose td {
   white-space: normal;
   vertical-align: top;
+  border: 1px solid #1f2925;
 }
 .prose th { color: var(--ink); text-transform: none; letter-spacing: 0; font-size: .92rem; }
 

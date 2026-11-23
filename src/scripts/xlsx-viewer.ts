@@ -3,10 +3,18 @@ type XlsxShell = HTMLElement & {
     bound?: string;
     ready?: string;
     xlsxUrl?: string;
+    xlsxSheet?: string;
     errorText?: string;
     loadingText?: string;
   };
 };
+
+function escapeHtml(text: string) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
 function withTimeout<T>(promise: Promise<T>, ms: number, label: string) {
   return new Promise<T>((resolve, reject) => {
@@ -36,6 +44,12 @@ function paintSheet(canvas: HTMLElement, html: string) {
   canvas.innerHTML = html;
   const table = canvas.querySelector("table");
   if (table) table.classList.add("excel-grid");
+  canvas.querySelectorAll("td, th").forEach((cell) => {
+    const text = cell.textContent ?? "";
+    if (text.includes("\n")) {
+      cell.innerHTML = escapeHtml(text).replace(/\n/g, "<br>");
+    }
+  });
 }
 
 export function bindXlsxViewer() {
@@ -59,10 +73,15 @@ export function bindXlsxViewer() {
         const buffer = await withTimeout(response.arrayBuffer(), 20000, "arrayBuffer");
         const { read, utils } = await import("xlsx");
         const workbook = read(buffer, { type: "array", cellDates: true });
-        const names = workbook.SheetNames.filter((name) => workbook.Sheets[name]);
+        const onlySheet = shell.dataset.xlsxSheet;
+        const names = workbook.SheetNames.filter((name) => {
+          if (!workbook.Sheets[name]) return false;
+          if (onlySheet) return name === onlySheet;
+          return true;
+        });
         if (!names.length) throw new Error("empty workbook");
 
-        const previewRows = 8; // header + No. 1–8
+        const previewRows = Number(shell.dataset.xlsxRows || 8);
         const htmlBySheet = Object.fromEntries(
           names.map((name) => {
             const sheet = workbook.Sheets[name];

@@ -72,7 +72,7 @@ const pillLabel = entry.data.grade === "application"
         <span>{localized.title}</span>
       </nav>
       <span class="pill">{pillLabel}</span>
-      <h1>{localized.title}</h1>
+      <h1 class:list={[{ "is-compact": entry.id.includes("application-recommenders") }]}>{localized.title}</h1>
       {localized.description.trim() && <p class="hero-copy">{localized.description}</p>}
       <div class="article-meta">
         <time datetime={entry.data.date.toISOString()}>{entry.data.date.toLocaleDateString(lang === "zh" ? "zh-CN" : "en-GB")}</time>
@@ -158,7 +158,7 @@ const pillLabel = entry.data.grade === "application"
         </div>
       )}
 
-      {xlsxAttachments.map((attachment) => {
+      {!entry.data.inlineXlsx && xlsxAttachments.map((attachment) => {
         const fileName = attachment.file.split("/").pop() || "workbook.xlsx";
         return (
           <section
@@ -194,13 +194,15 @@ const pillLabel = entry.data.grade === "application"
         );
       })}
 
-      {xlsxAttachments.length > 0 && (
+      {!entry.data.inlineXlsx && xlsxAttachments.length > 0 && (
         <div class="article-pdf-bar">
           {xlsxAttachments.map((attachment) => {
             const fileName = attachment.file.split("/").pop() || "workbook.xlsx";
             return (
               <a class="article-pdf-link" href={attachment.file} download={fileName}>
-                {lang === "zh" ? "下载空白时间管理表（Excel）" : "Download the blank timeline (Excel)"}
+                {attachment.label
+                  ? (lang === "zh" ? `下载${attachment.label}` : `Download ${attachment.label}`)
+                  : (lang === "zh" ? "下载 Excel" : "Download Excel")}
               </a>
             );
           })}
