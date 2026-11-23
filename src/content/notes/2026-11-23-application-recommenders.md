@@ -34,6 +34,7 @@ published: true
 <th>身份</th>
 <th>课程</th>
 <th>教授邮箱</th>
+<th>教授电话</th>
 <th>状态</th>
 <th>推荐数目</th>
 <th>推荐信撰写</th>
@@ -48,6 +49,7 @@ published: true
 <td>Lecturer</td>
 <td>某某课程</td>
 <td>xxxx@xxxx.edu</td>
+<td>xxxx</td>
 <td>结束，等待院校推荐信链接</td>
 <td>6~7所(弹性)</td>
 <td>学校老师本人</td>
@@ -60,6 +62,7 @@ published: true
 <td>Associate Professor</td>
 <td>毕业设计</td>
 <td>xxxx@xxxx.edu</td>
+<td>xxxx</td>
 <td>结束，等待院校推荐信链接</td>
 <td>6~7所(弹性)</td>
 <td>学校老师本人</td>
@@ -72,6 +75,7 @@ published: true
 <td>Associate Professor</td>
 <td>某某课程</td>
 <td>xxxx@xxxx.edu</td>
+<td>xxxx</td>
 <td>结束，等待院校推荐信链接</td>
 <td>不限(弹性)</td>
 <td>学校老师本人</td>
@@ -111,6 +115,7 @@ published: true
 列可以按这个理解：
 
 - **身份 / 课程**：这位老师是谁、你跟他熟的那门课或项目
+- **教授电话**：方便催进度、发链接时能打到人
 - **推荐数目**：这位老师大概愿意写几所，别一股脑全堆过去
 - **推荐信撰写**：这里一律按学校老师本人来写
 - **老师意向**：老师愿不愿意给你写
@@ -207,6 +212,7 @@ When you ask a teacher for a letter and want their details in one place, use thi
 <th>Role</th>
 <th>Course</th>
 <th>Professor email</th>
+<th>Professor phone</th>
 <th>Status</th>
 <th>How many letters</th>
 <th>Who writes</th>
@@ -221,6 +227,7 @@ When you ask a teacher for a letter and want their details in one place, use thi
 <td>Lecturer</td>
 <td>a course</td>
 <td>xxxx@xxxx.edu</td>
+<td>xxxx</td>
 <td>done, waiting for school rec links</td>
 <td>6–7 (flexible)</td>
 <td>the teacher</td>
@@ -233,6 +240,7 @@ When you ask a teacher for a letter and want their details in one place, use thi
 <td>Associate Professor</td>
 <td>final-year project</td>
 <td>xxxx@xxxx.edu</td>
+<td>xxxx</td>
 <td>done, waiting for school rec links</td>
 <td>6–7 (flexible)</td>
 <td>the teacher</td>
@@ -245,6 +253,7 @@ When you ask a teacher for a letter and want their details in one place, use thi
 <td>Associate Professor</td>
 <td>a course</td>
 <td>xxxx@xxxx.edu</td>
+<td>xxxx</td>
 <td>done, waiting for school rec links</td>
 <td>no hard cap (flexible)</td>
 <td>the teacher</td>
@@ -284,6 +293,7 @@ When you ask a teacher for a letter and want their details in one place, use thi
 How to read the columns:
 
 - **Role / course**: who they are, and the class or project you share
+- **Professor phone**: so you can call when a link or a reminder needs to go out
 - **How many letters**: a rough cap, so you do not dump every programme on one person
 - **Who writes**: here it is always the teacher
 - **Teacher intent**: whether they are willing to write for you
