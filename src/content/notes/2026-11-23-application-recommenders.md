@@ -115,7 +115,8 @@ published: true
 列可以按这个理解：
 
 - **身份 / 课程**：这位老师是谁、你跟他熟的那门课或项目
-- **教授电话**：方便催进度、发链接时能打到人
+- **教授邮箱**：学校会把推荐链接发到这个邮箱，老师要点开链接才能填写
+- **教授电话**：有的申请是必填，有的不是那么必须
 - **推荐数目**：这位老师大概愿意写几所，别一股脑全堆过去
 - **推荐信撰写**：这里一律按学校老师本人来写
 - **老师意向**：老师愿不愿意给你写
@@ -293,7 +294,8 @@ When you ask a teacher for a letter and want their details in one place, use thi
 How to read the columns:
 
 - **Role / course**: who they are, and the class or project you share
-- **Professor phone**: so you can call when a link or a reminder needs to go out
+- **Professor email**: the school sends the recommendation link here; the teacher has to open it to fill in the form
+- **Professor phone**: required by some applications, optional for others
 - **How many letters**: a rough cap, so you do not dump every programme on one person
 - **Who writes**: here it is always the teacher
 - **Teacher intent**: whether they are willing to write for you
