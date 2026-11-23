@@ -669,6 +669,39 @@ html[lang="en"] .i18n-zh {
 .prose .file-explorer .file-list.is-nested .file-row {
   padding-left: 0;
 }
+.prose .link-card {
+  display: block;
+  margin: 0 0 1.4em;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 1.5;
+}
+.prose .link-card:hover {
+  border-color: var(--green);
+}
+.prose .link-card b,
+.prose .link-card strong,
+.prose .link-card i {
+  display: block;
+  font-style: normal;
+}
+.prose .link-card b {
+  margin-bottom: 6px;
+  font-weight: 400;
+}
+.prose .link-card strong {
+  font-size: 1.05rem;
+  color: var(--green);
+}
+.prose .link-card i {
+  margin-top: 4px;
+  font-weight: 400;
+}
 .prose .web-embed {
   margin: 0 0 1.4em;
   height: min(78vh, 860px);
